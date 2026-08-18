@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIBBAKU V595 | Kubikasi & NPB</title>
+    <title>GIBBAKU V604 | Kubikasi & NPB</title>
     <style>
         :root {
             --sidebar: #172033;
@@ -299,10 +299,33 @@
             transform: none;
             box-shadow: none;
         }
-        .btn-primary { background: linear-gradient(135deg, #22c55e, var(--success)); }
-        .btn-warning { background: linear-gradient(135deg, #fbbf24, var(--warning)); color: #422006; }
-        .btn-danger { background: linear-gradient(135deg, #ef4444, var(--danger)); }
-        .btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
+        /* V6.03 — warna tombol seragam berdasarkan fungsi.
+           INPUT/TAMBAH/SIMPAN = hijau, HAPUS = merah, EDIT/GANTI = oranye, aksi netral = slate. */
+        .btn-input, .btn-primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(22, 163, 74, .24);
+        }
+        .btn-edit, .btn-warning {
+            background: linear-gradient(135deg, #fb923c, #ea580c);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(234, 88, 12, .22);
+        }
+        .btn-delete, .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(220, 38, 38, .22);
+        }
+        .btn-neutral, .btn-secondary, .btn-success {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(71, 85, 105, .20);
+        }
+        .btn-calc-action {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(22, 163, 74, .24);
+        }
 
         .bulk-data-actions {
             display: flex;
@@ -535,31 +558,23 @@
             font-size: 10px;
             font-weight: 800;
         }
-        .nota-photo-remove {
+        .nota-photo-remove, .nota-photo-replace {
             flex: 0 0 auto;
+            min-height: 30px;
             border: 0;
-            border-radius: 6px;
-            padding: 3px 7px;
-            background: #fee2e2;
-            color: #b91c1c;
+            border-radius: 8px;
+            padding: 5px 9px;
+            color: #ffffff;
             font-size: 10px;
             font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, .12);
         }
+        .nota-photo-remove { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .nota-photo-replace { background: linear-gradient(135deg, #fb923c, #ea580c); }
         .nota-photo-card-actions {
             display: flex;
-            gap: 4px;
-        }
-        .nota-photo-replace {
-            flex: 0 0 auto;
-            border: 0;
-            border-radius: 6px;
-            padding: 3px 7px;
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-size: 10px;
-            font-weight: 800;
-            cursor: pointer;
+            gap: 5px;
         }
         .nota-photo-card img {
             display: block;
@@ -640,13 +655,16 @@
             font-size: 9.5px;
         }
         .nota-line-meta button {
+            min-width: 28px;
+            min-height: 28px;
             border: 0;
-            background: #fee2e2;
-            color: #b91c1c;
-            border-radius: 6px;
-            padding: 2px 6px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 3px 7px;
             cursor: pointer;
             font-weight: 800;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, .18);
         }
         .nota-line-result {
             margin-top: 4px;
@@ -1800,7 +1818,551 @@
                 border: 0 !important;
             }
         }
-    </style>
+    
+
+        /* =========================================================
+           V6.04 — ELEGANT WORK APP UI
+           Fokus: natural, tenang, profesional, tidak seperti template AI.
+           Hanya visual; logika aplikasi/OCR tidak diubah.
+           ========================================================= */
+        :root {
+            --ink-950: #17202a;
+            --ink-900: #202a35;
+            --ink-800: #34404c;
+            --ink-700: #4b5967;
+            --ink-500: #74808c;
+            --paper: #ffffff;
+            --paper-warm: #fbfaf8;
+            --canvas: #f3f2ef;
+            --rule: #e4e1dc;
+            --rule-strong: #d5d1ca;
+            --green: #237a4b;
+            --green-dark: #1c663d;
+            --red: #b63b35;
+            --red-dark: #96312c;
+            --orange: #c56b2b;
+            --orange-dark: #a75821;
+            --neutral: #56616d;
+            --neutral-dark: #46515c;
+            --focus: #385f8c;
+            --shadow-soft: 0 8px 26px rgba(37, 42, 48, .07);
+            --shadow-float: 0 12px 32px rgba(30, 35, 40, .10);
+        }
+
+        * {
+            font-family: "Segoe UI", Inter, Roboto, Arial, sans-serif;
+        }
+
+        body {
+            padding: 14px;
+            background: var(--canvas);
+            color: var(--ink-950);
+        }
+
+        .container {
+            width: min(1500px, 100%);
+            min-height: calc(100vh - 28px);
+            border: 1px solid #dedbd5;
+            border-radius: 12px;
+            background: var(--paper-warm);
+            box-shadow: 0 12px 36px rgba(37, 42, 48, .08);
+        }
+
+        nav {
+            min-height: calc(100vh - 28px);
+            padding: 20px 12px 16px;
+            gap: 5px;
+            background: #202832;
+        }
+
+        .brand {
+            gap: 10px;
+            padding: 0 8px 17px;
+            margin-bottom: 8px;
+            border-bottom-color: rgba(255,255,255,.08);
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            flex-basis: 38px;
+            border-radius: 8px;
+            background: #f2f0eb;
+            color: #202832;
+            box-shadow: none;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: .55px;
+        }
+
+        .brand-subtitle {
+            color: #aeb7c0;
+            font-size: 10.5px;
+        }
+
+        .menu-label {
+            padding: 7px 10px 4px;
+            color: #7f8a96;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.15px;
+        }
+
+        nav button {
+            min-height: 43px;
+            padding: 8px 10px;
+            gap: 10px;
+            border-radius: 7px;
+            color: #c5ccd3;
+            font-size: 12.5px;
+            font-weight: 650;
+            transition: background-color .14s ease, color .14s ease;
+        }
+
+        nav button .nav-icon {
+            width: 26px;
+            height: 26px;
+            flex-basis: 26px;
+            border-radius: 6px;
+            background: rgba(255,255,255,.06);
+            font-size: 13px;
+        }
+
+        nav button:hover {
+            color: #fff;
+            background: rgba(255,255,255,.055);
+            transform: none;
+        }
+
+        nav button.active {
+            color: #fff;
+            background: #33404c;
+            box-shadow: none;
+        }
+
+        nav button.active::before {
+            left: -12px;
+            top: 8px;
+            width: 3px;
+            height: 27px;
+            border-radius: 0 3px 3px 0;
+            background: #d9d6cf;
+        }
+
+        .sidebar-footer {
+            color: #8f9aa5;
+            border-top-color: rgba(255,255,255,.08);
+        }
+
+        .menu-section {
+            padding: 28px 30px 34px;
+            background: var(--paper-warm);
+        }
+
+        .section-heading {
+            align-items: center;
+            margin-bottom: 18px;
+            padding-bottom: 13px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .section-heading h2 {
+            color: var(--ink-950);
+            font-size: 22px;
+            font-weight: 720;
+            letter-spacing: -.25px;
+        }
+
+        .section-heading p {
+            margin-top: 5px;
+            color: var(--ink-500);
+            font-size: 12px;
+        }
+
+        .section-badge {
+            padding: 5px 9px;
+            border: 1px solid var(--rule-strong);
+            border-radius: 6px;
+            background: #f0efec;
+            color: var(--ink-700);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .form-row,
+        .nota-import-card,
+        .backup-card,
+        .firebase-hybrid-card {
+            border: 1px solid var(--rule);
+            border-radius: 10px;
+            background: var(--paper);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .form-row {
+            gap: 14px;
+            margin-bottom: 18px;
+            padding: 17px;
+        }
+
+        .form-group label,
+        .nota-photo-box > label,
+        .nota-text-box > label {
+            margin-bottom: 6px;
+            color: var(--ink-800);
+            font-size: 11.5px;
+            font-weight: 650;
+        }
+
+        input, select, textarea {
+            border: 1px solid #cbc8c2;
+            border-radius: 7px;
+            background: #fff;
+            color: var(--ink-950);
+            box-shadow: inset 0 1px 0 rgba(20,25,30,.02);
+        }
+
+        input, select {
+            min-height: 40px;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        textarea {
+            line-height: 1.5;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #778b9e;
+            box-shadow: 0 0 0 3px rgba(56, 95, 140, .10);
+            outline: none;
+        }
+
+        .btn {
+            min-height: 39px;
+            padding: 8px 14px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: .01em;
+            box-shadow: 0 2px 5px rgba(30, 35, 40, .10);
+            transition: background-color .14s ease, border-color .14s ease, box-shadow .14s ease, transform .08s ease;
+        }
+
+        .btn:hover {
+            filter: none;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(30, 35, 40, .13);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(30, 35, 40, .10);
+        }
+
+        .btn-input, .btn-primary, .btn-calc-action {
+            background: var(--green);
+            border-color: var(--green-dark);
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(35,122,75,.18);
+        }
+        .btn-input:hover, .btn-primary:hover, .btn-calc-action:hover { background: var(--green-dark); }
+
+        .btn-edit, .btn-warning {
+            background: var(--orange);
+            border-color: var(--orange-dark);
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(197,107,43,.18);
+        }
+        .btn-edit:hover, .btn-warning:hover { background: var(--orange-dark); }
+
+        .btn-delete, .btn-danger {
+            background: var(--red);
+            border-color: var(--red-dark);
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(182,59,53,.18);
+        }
+        .btn-delete:hover, .btn-danger:hover { background: var(--red-dark); }
+
+        .btn-neutral, .btn-secondary, .btn-success {
+            background: #fff;
+            border-color: #bbb8b2;
+            color: var(--ink-800);
+            box-shadow: 0 1px 3px rgba(30,35,40,.06);
+        }
+        .btn-neutral:hover, .btn-secondary:hover, .btn-success:hover {
+            background: #f4f3f0;
+            border-color: #aaa69f;
+        }
+
+        .nota-import-card {
+            padding: 17px;
+        }
+
+        .nota-photo-box,
+        .nota-text-box {
+            border-color: var(--rule);
+            border-radius: 8px;
+            background: #fcfbf9;
+        }
+
+        .nota-primary-action {
+            min-height: 42px;
+            font-size: 12px;
+            letter-spacing: .04em;
+        }
+
+        .nota-photo-card {
+            border-color: var(--rule);
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: none;
+        }
+
+        .nota-photo-replace {
+            border: 1px solid #d18753 !important;
+            border-radius: 5px !important;
+            background: #c56b2b !important;
+            color: #fff !important;
+            font-weight: 700 !important;
+        }
+        .nota-photo-remove,
+        .nota-line-meta button {
+            border: 1px solid #9a312d !important;
+            border-radius: 5px !important;
+            background: #b63b35 !important;
+            color: #fff !important;
+        }
+
+        details > summary {
+            color: var(--ink-700) !important;
+        }
+
+        #nota-paddle-raw {
+            border-color: var(--rule) !important;
+            border-radius: 6px !important;
+            background: #f7f6f3 !important;
+        }
+
+        .table-scroll-shell {
+            border: 1px solid var(--rule);
+            border-radius: 9px;
+            background: #fff;
+            box-shadow: 0 5px 18px rgba(37,42,48,.045);
+        }
+
+        .data-table,
+        .calc-table,
+        .nota-preview-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .data-table thead th,
+        .calc-table thead th,
+        .nota-preview-table thead th {
+            background: #efeeeb;
+            color: #424c56;
+            border-bottom: 1px solid #d8d5cf;
+            font-size: 10.5px;
+            font-weight: 750;
+            letter-spacing: .025em;
+            text-transform: none;
+        }
+
+        .data-table tbody td,
+        .calc-table tbody td,
+        .nota-preview-table tbody td {
+            border-bottom-color: #ece9e4;
+            color: #303a44;
+            font-size: 11.5px;
+        }
+
+        .data-table tbody tr:nth-child(even),
+        .calc-table tbody tr:nth-child(even),
+        .nota-preview-table tbody tr:nth-child(even) {
+            background: #fcfbf9;
+        }
+
+        .data-table tbody tr:hover,
+        .calc-table tbody tr:hover,
+        .nota-preview-table tbody tr:hover {
+            background: #f4f2ee;
+        }
+
+        .master-action-cell .btn,
+        .draft-action-cell .btn {
+            min-height: 30px !important;
+            padding: 4px 9px !important;
+            border-radius: 6px;
+            font-size: 10.5px;
+            box-shadow: none;
+        }
+
+        .result-box {
+            border: 1px solid #d7d3cc;
+            border-left: 4px solid var(--green);
+            border-radius: 8px;
+            background: #f7f6f3;
+            box-shadow: none;
+        }
+
+        .result-box #result-kubikasi {
+            color: #1f5638;
+            font-weight: 750;
+        }
+
+        .bulk-data-actions {
+            margin-top: 12px;
+        }
+
+        .backup-card-header h3,
+        .firebase-hybrid-card h3 {
+            color: var(--ink-950);
+        }
+
+        .backup-stat {
+            border-color: var(--rule);
+            border-radius: 7px;
+            background: #f7f6f3;
+        }
+
+        .backup-status {
+            border-radius: 7px;
+            border-color: var(--rule);
+            background: #f7f6f3;
+        }
+
+        .npb-toolbar {
+            padding: 8px;
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .edit-return-highlight td {
+            background-color: #edf5ef !important;
+            box-shadow: inset 0 1px 0 #86aa91, inset 0 -1px 0 #86aa91;
+        }
+
+        @media (max-width: 900px) {
+            body { padding: 0; background: #fff; }
+            .container { min-height: 100vh; border: 0; border-radius: 0; box-shadow: none; }
+            .menu-section { padding: 18px 14px 28px; }
+        }
+
+        @media (max-width: 680px) {
+            .section-heading { margin-bottom: 14px; padding-bottom: 10px; }
+            .section-heading h2 { font-size: 20px; }
+            .form-row, .nota-import-card { padding: 13px; border-radius: 8px; }
+            .btn { min-height: 42px; }
+            .nota-import-actions .btn { min-height: 42px; }
+            .table-scroll-shell { border-radius: 7px; }
+        }
+
+
+
+        /* V6.05 — MOBILE NAV FIX
+           V6.04 menambahkan style nav desktop setelah media-query mobile lama,
+           sehingga min-height: calc(100vh - 28px) menang di cascade pada HP.
+           Reset ini sengaja diletakkan PALING AKHIR agar navbar mobile kembali kompak. */
+        @media (max-width: 680px) {
+            body {
+                padding: 0 !important;
+                background: #ffffff;
+            }
+
+            .container {
+                min-height: 100vh;
+                display: block;
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            nav {
+                position: sticky;
+                top: 0;
+                z-index: 80;
+                width: 100%;
+                min-height: 0 !important;
+                height: auto !important;
+                padding: 7px max(7px, env(safe-area-inset-right)) 7px max(7px, env(safe-area-inset-left));
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-auto-rows: auto;
+                align-items: stretch;
+                justify-items: stretch;
+                gap: 5px;
+                background: #202832;
+                box-shadow: 0 3px 12px rgba(32, 40, 50, .16);
+            }
+
+            nav .brand,
+            nav .menu-label,
+            nav .sidebar-footer {
+                display: none !important;
+            }
+
+            nav button {
+                width: 100%;
+                min-width: 0;
+                min-height: 52px;
+                height: auto;
+                margin: 0;
+                padding: 6px 2px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                border-radius: 7px;
+                font-size: 9px;
+                line-height: 1.05;
+                text-align: center;
+            }
+
+            nav button .nav-icon {
+                width: 25px;
+                height: 25px;
+                flex: 0 0 25px;
+                border-radius: 6px;
+                font-size: 13px;
+            }
+
+            nav button span:last-child {
+                display: block !important;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 9px;
+                line-height: 1.1;
+                text-align: center;
+            }
+
+            nav button.active {
+                background: #33404c;
+                box-shadow: none;
+            }
+
+            nav button.active::before {
+                display: none !important;
+            }
+
+            .menu-section {
+                width: 100%;
+                max-width: 100%;
+                padding: 16px 12px calc(26px + env(safe-area-inset-bottom));
+            }
+        }
+</style>
 </head>
 <body>
 <div class="container">
@@ -1856,8 +2418,8 @@
             <div class="form-group"><label id="m-pcs-label">Pcs</label><input type="number" id="m-pcs" min="1"></div>
 
             <div class="form-actions" style="flex: 0 0 140px;">
-                <button id="btn-master-save" class="btn btn-primary" onclick="saveMaster()" style="width:100%;">Tambah Data</button>
-                <button id="btn-master-cancel" class="btn btn-secondary" onclick="cancelEditMaster()" style="width:100%;margin-top:5px;display:none;">Batal Edit</button>
+                <button id="btn-master-save" class="btn btn-input" onclick="saveMaster()" style="width:100%;">Tambah Data</button>
+                <button id="btn-master-cancel" class="btn btn-neutral" onclick="cancelEditMaster()" style="width:100%;margin-top:5px;display:none;">Batal Edit</button>
             </div>
         </div>
         <div class="table-scroll-shell" aria-label="Tabel Data Kayu responsif pada layar kecil">
@@ -1876,7 +2438,7 @@
         </table>
         </div>
         <div class="bulk-data-actions no-print">
-            <button id="btn-master-delete-all" type="button" class="btn btn-danger" onclick="hapusSemuaDataKayu()">🗑️ Hapus Semua Data Kayu</button>
+            <button id="btn-master-delete-all" type="button" class="btn btn-delete" onclick="hapusSemuaDataKayu()">Hapus Semua Data Kayu</button>
         </div>
     </div>
 
@@ -1898,13 +2460,13 @@
                     <input type="file" id="nota-camera-input" accept="image/*" capture="environment" onchange="previewNotaPhoto(event)" hidden>
                     <input type="file" id="nota-replace-input" accept="image/*" onchange="previewGantiFotoNotaV36(event)" hidden>
                     <div class="nota-import-actions">
-                        <button type="button" class="btn btn-primary" onclick="document.getElementById('nota-photo-input').click()">🖼️ Ambil dari Galeri</button>
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('nota-camera-input').click()">📷 Kamera</button>
+                        <button type="button" class="btn btn-input" onclick="document.getElementById('nota-photo-input').click()">Ambil dari Galeri</button>
+                        <button type="button" class="btn btn-input" onclick="document.getElementById('nota-camera-input').click()">Kamera</button>
                     </div>
                     <div id="nota-photo-previews" class="nota-photo-previews" aria-live="polite"></div>
                     <div id="nota-photo-count" class="nota-photo-count"></div>
                     <div class="nota-import-actions">
-                        <button type="button" class="btn btn-primary nota-primary-action" onclick="bacaNotaDenganPaddleOCR()">SCAN</button>
+                        <button type="button" class="btn btn-input nota-primary-action" onclick="bacaNotaDenganPaddleOCR()">SCAN</button>
                     </div>
                     <div id="nota-ocr-status" class="nota-ocr-status"></div>
                     <div id="nota-v3-rescue-info" class="nota-rescue-info">Sebagian baris masih meragukan; Tesseract sedang dipakai sebagai pemeriksaan tambahan.</div>
@@ -1912,8 +2474,8 @@
                         <canvas id="nota-crop-canvas" width="1" height="1"></canvas>
                         <div class="nota-crop-hint">Seret kotak mengelilingi satu baris tulisan. Buat satu kotak untuk setiap baris, lalu tekan “Baca TrOCR Ringan”. Area hijau dapat dihapus dari kartu pratinjau.</div>
                         <div class="nota-import-actions">
-                            <button type="button" class="btn btn-secondary" onclick="deteksiBarisNotaTrocr()">Deteksi Ulang Otomatis</button>
-                            <button type="button" class="btn btn-secondary" onclick="hapusSemuaBarisTrocr()">Hapus Semua Area</button>
+                            <button type="button" class="btn btn-neutral" onclick="deteksiBarisNotaTrocr()">Deteksi Ulang Otomatis</button>
+                            <button type="button" class="btn btn-delete" onclick="hapusSemuaBarisTrocr()">Hapus Semua Area</button>
                         </div>
                         <div id="nota-line-preview" class="nota-line-preview"></div>
                     </div>
@@ -1924,12 +2486,11 @@
                 </div>
 
                 <div class="nota-text-box">
-                    <label>Teks Nota — boleh dikoreksi manual sebelum diproses</label>
+                    <label>Teks Nota — boleh dikoreksi manual sebelum masuk perhitungan</label>
                     <textarea id="nota-ocr-text" spellcheck="false"></textarea>
                     <div class="nota-import-actions">
-                        <button type="button" class="btn btn-warning" onclick="prosesTeksNota()">⚙ Proses Teks</button>
-                        <button type="button" class="btn btn-success" onclick="masukkanNotaKePerhitungan()">+ Masukkan ke Perhitungan</button>
-                        <button type="button" class="btn btn-secondary" onclick="bersihkanInputNota()">Bersihkan</button>
+                        <button type="button" class="btn btn-input" onclick="masukkanNotaKePerhitungan()">Masuk Perhitungan</button>
+                        <button type="button" class="btn btn-delete" onclick="bersihkanInputNota()">Bersihkan</button>
                     </div>
                 </div>
             </div>
@@ -1971,8 +2532,8 @@
             </div>
             
             <div class="form-actions" style="flex: 0 0 140px;">
-                <button id="btn-calc-save" class="btn btn-primary" onclick="saveCalc()" style="width:100%;">+ Tambah Draft</button>
-                <button id="btn-calc-cancel" class="btn btn-secondary" onclick="cancelEditCalc()" style="width:100%;margin-top:5px;display:none;">Batal Edit</button>
+                <button id="btn-calc-save" class="btn btn-input" onclick="saveCalc()" style="width:100%;">Tambah Draft</button>
+                <button id="btn-calc-cancel" class="btn btn-neutral" onclick="cancelEditCalc()" style="width:100%;margin-top:5px;display:none;">Batal Edit</button>
             </div>
         </div>
 
@@ -1999,16 +2560,16 @@
         </table>
         </div>
         <div class="bulk-data-actions no-print">
-            <button id="btn-draft-delete-all" type="button" class="btn btn-danger" onclick="hapusSemuaDataPerhitungan()">🗑️ Hapus Semua Data Perhitungan</button>
-            <button type="button" class="btn btn-primary" onclick="kirimKeNPB()">📋 Kirim Draft ke NPB</button>
+            <button id="btn-draft-delete-all" type="button" class="btn btn-delete" onclick="hapusSemuaDataPerhitungan()">Hapus Semua Data Perhitungan</button>
+            <button type="button" class="btn btn-input" onclick="kirimKeNPB()">Kirim Draft ke NPB</button>
         </div>
     </div>
 
     <!-- 3. MENU NPB -->
     <div id="section-npb" class="menu-section">
         <div class="no-print npb-toolbar" style="margin-bottom:10px;display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="window.print()">Print</button>
-            <button class="btn btn-danger" onclick="hapusSemuaNPB()">Hapus Semua</button>
+            <button class="btn btn-neutral" onclick="window.print()">Print</button>
+            <button class="btn btn-delete" onclick="hapusSemuaNPB()">Hapus Semua</button>
         </div>
 
         <div class="npb-screen-scroll" id="npb-screen-scroll">
@@ -2031,7 +2592,7 @@
                         </div>
 
                         <div class="npb-field-block">
-                            <label class="npb-field-line"><span>Tanggal</span><span>:</span><input type="text" id="npb-tgl"></label>
+                            <label class="npb-field-line"><span>Tanggal</span><span>:</span><input type="text" id="npb-tgl" inputmode="numeric" placeholder="DD/MM/YYYY" autocomplete="off"></label>
                             <label class="npb-field-line"><span>Bagian Pemohon</span><span>:</span><input type="text" id="npb-pemohon"></label>
                             <label class="npb-field-line"><span>Cost Center</span><span>:</span><input type="text" id="npb-cost-center"></label>
                             <label class="npb-field-line"><span>NPB Doc. No.</span><span>:</span><input type="text" id="npb-doc-no"></label>
@@ -2175,7 +2736,7 @@
                     <div class="backup-stat"><span>Data Perhitungan</span><strong id="backup-draft-count">0</strong></div>
                 </div>
                 <div class="backup-actions">
-                    <button class="btn btn-primary" onclick="exportBackupData()">⬇ Export Backup JSON</button>
+                    <button class="btn btn-neutral" onclick="exportBackupData()">Export Backup JSON</button>
                 </div>
             </div>
 
@@ -2188,7 +2749,7 @@
                 </div>
                 <input type="file" id="backup-file-input" accept="application/json,.json" hidden onchange="importBackupData(event)">
                 <div class="backup-actions">
-                    <button class="btn btn-warning" onclick="document.getElementById('backup-file-input').click()">⬆ Pilih File Backup</button>
+                    <button class="btn btn-input" onclick="document.getElementById('backup-file-input').click()">Pilih File Backup</button>
                 </div>
                 <div id="backup-status" class="backup-status">Belum ada proses backup atau pemulihan.</div>
             </div>
@@ -2239,11 +2800,11 @@
             </div>
 
             <div class="backup-actions">
-                <button class="btn btn-primary" onclick="saveFirebaseSettingsAndConnect()">☁ Simpan &amp; Hubungkan</button>
-                <button class="btn btn-success" onclick="syncHybridNow()">↻ Sinkronkan Sekarang</button>
-                <button class="btn btn-warning" onclick="pullAllFromFirebase()">↓ Ambil Firebase</button>
-                <button class="btn btn-primary" onclick="pushAllToFirebase()">↑ Kirim Lokal</button>
-                <button class="btn btn-danger" onclick="disableFirebaseHybrid()">Putuskan Firebase</button>
+                <button class="btn btn-input" onclick="saveFirebaseSettingsAndConnect()">Simpan &amp; Hubungkan</button>
+                <button class="btn btn-neutral" onclick="syncHybridNow()">Sinkronkan Sekarang</button>
+                <button class="btn btn-input" onclick="pullAllFromFirebase()">Ambil Firebase</button>
+                <button class="btn btn-neutral" onclick="pushAllToFirebase()">Kirim Lokal</button>
+                <button class="btn btn-delete" onclick="disableFirebaseHybrid()">Putuskan Firebase</button>
             </div>
 
             <div id="firebase-status" class="backup-status">Konfigurasi Firebase gibbaku-27 sudah diisi. Tekan “Simpan & Hubungkan” untuk mengaktifkan sinkronisasi online.</div>
@@ -2263,9 +2824,9 @@
                 </div>
             </div>
             <div class="backup-actions">
-                <button type="button" class="btn btn-primary" onclick="simpanAppCheckDebugTokenNota()">Simpan Token &amp; Muat Ulang</button>
-                <button type="button" class="btn btn-secondary" onclick="tesAppCheckNota()">Tes App Check</button>
-                <button type="button" class="btn btn-danger" onclick="hapusAppCheckDebugTokenNota()">Hapus Token</button>
+                <button type="button" class="btn btn-input" onclick="simpanAppCheckDebugTokenNota()">Simpan Token &amp; Muat Ulang</button>
+                <button type="button" class="btn btn-neutral" onclick="tesAppCheckNota()">Tes App Check</button>
+                <button type="button" class="btn btn-delete" onclick="hapusAppCheckDebugTokenNota()">Hapus Token</button>
             </div>
             <div id="nota-appcheck-status" class="backup-status">Belum diperiksa.</div>
         </div>
@@ -3002,8 +3563,8 @@
         document.getElementById('m-pcs').value = d.pcs;
         updateMasterFormMode();
 
-        document.getElementById('btn-master-save').innerHTML = '💾 Update Data';
-        document.getElementById('btn-master-save').className = 'btn btn-warning';
+        document.getElementById('btn-master-save').innerHTML = 'Update Data';
+        document.getElementById('btn-master-save').className = 'btn btn-edit';
         document.getElementById('btn-master-cancel').style.display = 'block';
         scrollKeFormEdit('master-form-area', 'm-tipe');
     }
@@ -3016,7 +3577,7 @@
 
     function resetMasterBtn() {
         document.getElementById('btn-master-save').innerHTML = 'Tambah Data';
-        document.getElementById('btn-master-save').className = 'btn btn-primary';
+        document.getElementById('btn-master-save').className = 'btn btn-input';
         document.getElementById('btn-master-cancel').style.display = 'none';
     }
 
@@ -3078,8 +3639,8 @@
                 <td>${escapeHtml(d.ukuran)}</td>
                 <td>${d.pcs === '' || d.pcs == null ? '' : formatPcsID(d.pcs)}</td>
                 <td class="master-action-cell">
-                    <button class="btn btn-warning" onclick="editMaster(${d.id})" style="padding:2px 6px;">Edit</button>
-                    <button class="btn btn-danger" onclick="hapusMaster(${d.id})" style="padding:2px 6px;">Hapus</button>
+                    <button class="btn btn-edit" onclick="editMaster(${d.id})" style="padding:2px 6px;">Edit</button>
+                    <button class="btn btn-delete" onclick="hapusMaster(${d.id})" style="padding:2px 6px;">Hapus</button>
                 </td>
             </tr>`;
         });
@@ -3470,7 +4031,8 @@
         resetAlatBarisNotaV36();
         resetHasilOcrNotaV36(true);
         renderPreviewFotoNotaV36();
-        setNotaStatus(`Foto ${index + 1} berhasil diganti. Tekan “SCAN”.`, 'success');
+        setNotaStatus(`Foto ${index + 1} berhasil diganti. Menyiapkan OCR di latar...`, 'success');
+        jadwalkanWarmupPaddleV598();
     }
 
     async function previewNotaPhoto(event) {
@@ -3534,7 +4096,8 @@
             return;
         }
         const duplicateNote = skippedDuplicate ? ` • ${skippedDuplicate} foto duplikat dilewati` : '';
-        setNotaStatus(`${notaPhotoItems.length}/3 foto siap${duplicateNote}. Tekan “SCAN”.`, 'success');
+        setNotaStatus(`${notaPhotoItems.length}/3 foto siap${duplicateNote}. Menyiapkan OCR di latar...`, 'success');
+        jadwalkanWarmupPaddleV598();
     }
 
     async function loadFirebaseAINota() {
@@ -3846,7 +4409,7 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
             const dikenali = parsedNotaRows.length;
             const cocok = parsedNotaRows.filter(x => x.master).length;
             setNotaStatus(
-                `AI Vision selesai (${usedModel}) • ${dikenali} baris dikenali • ${cocok} cocok dengan Data Kayu. Periksa hasil lalu tekan “Masukkan ke Perhitungan”.`,
+                `AI Vision selesai (${usedModel}) • ${dikenali} baris dikenali • ${cocok} cocok dengan Data Kayu. Periksa hasil lalu tekan “Masuk Perhitungan”.`,
                 dikenali ? 'success' : 'error'
             );
         } catch (error) {
@@ -12988,6 +13551,1011 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
         return {rows,recovered:1,debugRecords};
     }
 
+
+    // ===== V5.96: RC 130 2/9 — konsensus multi-view pada BARIS YANG SAMA =====
+    // Kasus nyata: tulisan superscript "2/9" dapat berulang kali dibaca sebagai "7g",
+    // sementara view lain hanya membaca "/g" atau "^g". V5.96 hanya aktif jika:
+    // 1) master PAPAN RC 130 2/9 memang ada di Data Kayu;
+    // 2) satu baris fisik memiliki bukti RC + 130 dari beberapa view;
+    // 3) glyph denominator 9 (9/g/q) muncul berulang, bersama bentuk 7g atau slash tanpa pembilang;
+    // 4) jumlah (=N) konsisten pada >=2 view baris dan dikonfirmasi whole-image terdekat;
+    // 5) tidak ada tanda B.RC pada baris tersebut.
+    // Jumlah selalu diambil dari OCR; tidak pernah di-hard-code menjadi 2.
+    function evidenceRc29MultiViewV596(raw) {
+        const normalized=normalisasiSubscriptV577(normalisasiHasilOCRNota(raw)).toUpperCase();
+        const compact0=normalized.replace(/\s+/g,'');
+        const mapped=compact0.replace(/[O]/g,'0').replace(/[QG]/g,'9');
+
+        const brc=brcJelasV595(raw)
+            || /(?:^|[^A-Z0-9])(?:B|8)[.。,:;\/\-]*(?:R|P|F|9)[.。,:;\/\-]*[C0OQG]/.test(compact0);
+        const rc=!brc && (
+            rcishV595(raw)
+            || /(?:^|[^A-Z0-9])(?:RC|2C|KC|PC|RE)[.。,:;\/\-]*13[0OQ]/.test(compact0)
+        );
+        const length130=/130/.test(mapped);
+
+        const idx=mapped.indexOf('130');
+        const tailAll=idx>=0 ? mapped.slice(idx+3, idx+15) : '';
+        const tail=tailAll.split(/(?:=|二|﹦|＝|≥|>)/)[0];
+
+        // Bentuk yang muncul pada foto nyata:
+        // 1307g -> mapped 13079 ; 130/g -> 130/9 ; 130^g -> 130^9 ; 130g -> 1309.
+        const glyph7Den9=/^[\/\\|{}\[\]()^%_~]*7[\/\\|{}\[\]()^%_~]*9(?=$|[^0-9])/.test(tail)
+            || /^79(?=$|[^0-9])/.test(tail);
+        const slashNoNumerator=/^[\/\\|{}\[\]()^%_~]+9(?=$|[^0-9])/.test(tail);
+        const bareDen9=/^9(?=$|[^0-9])/.test(tail);
+        const den9=glyph7Den9 || slashNoNumerator || bareDen9
+            || /^[\/\\|{}\[\]()^%_~]*[27]9(?=$|[^0-9])/.test(tail);
+
+        let explicitOtherNumerator=null;
+        const explicit=tail.match(/^([1-9]|1[0-9])[\/\\|{}\[\]()^%_~]+9(?=$|[^0-9])/);
+        if (explicit && ![2,7].includes(Number(explicit[1]))) explicitOtherNumerator=Number(explicit[1]);
+
+        const qty=qtyEksplisitDinamisV595(raw);
+        return {rc,brc,length130,glyph7Den9,slashNoNumerator,bareDen9,den9,explicitOtherNumerator,qty,raw:compact0};
+    }
+
+    function rescueRc13029MultiViewV596(rawRecords, baselineRows, prepared=null) {
+        const rows=[...(baselineRows||[])], debugRecords=[];
+        const master=kandidatMasterKayuV577('PAPAN RC',130,9,2);
+        if (!master) return {rows,recovered:0,debugRecords,reason:'master-rc13029-not-unique'};
+        if (rows.some(r=>masterSamaTargetV587(r?.canon?.master,'PAPAN RC',130,9,2))) {
+            return {rows,recovered:0,debugRecords,reason:'already'};
+        }
+
+        const byLine=new Map();
+        for (const r of rawRecords||[]) {
+            const src=String(r?.source||'').toUpperCase();
+            if (!(src==='PADDLE' || src.startsWith('PADDLE-V6') || src==='TESSERACT' || src==='TROCR')) continue;
+            const line=lineIndexHasilV4(r);
+            if (line==null || Number(r?.score||0)<0.40) continue;
+            if (!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+
+        const H=Math.max(1,Number(prepared?.base?.height||1600));
+        const candidates=[];
+        for (const [line,recs] of byLine) {
+            const evs=recs.map(r=>({r,ev:evidenceRc29MultiViewV596(r?.text||'')}));
+            if (evs.some(x=>x.ev.brc)) continue;
+            if (evs.some(x=>x.ev.explicitOtherNumerator!=null)) continue;
+
+            const rcViews=new Set(evs.filter(x=>x.ev.rc).map(x=>`${familyV595(x.r)}:${x.r.variant||''}`));
+            const lenViews=new Set(evs.filter(x=>x.ev.length130).map(x=>`${familyV595(x.r)}:${x.r.variant||''}`));
+            const denViews=new Set(evs.filter(x=>x.ev.den9).map(x=>`${familyV595(x.r)}:${x.r.variant||''}`));
+            const glyphViews=new Set(evs.filter(x=>x.ev.glyph7Den9).map(x=>`${familyV595(x.r)}:${x.r.variant||''}`));
+            const slashViews=new Set(evs.filter(x=>x.ev.slashNoNumerator || x.ev.bareDen9).map(x=>`${familyV595(x.r)}:${x.r.variant||''}`));
+
+            // Quantity harus benar-benar konsensus di baris yang sama.
+            const qCounts=new Map();
+            for (const x of evs) {
+                if (x.ev.qty==null) continue;
+                const q=Number(x.ev.qty);
+                if (!Number.isFinite(q) || q<1 || q>99) continue;
+                qCounts.set(q,(qCounts.get(q)||0)+1);
+            }
+            const qRank=[...qCounts.entries()].sort((a,b)=>(b[1]-a[1])||(a[0]-b[0]));
+            if (!qRank.length || qRank[0][1]<2) continue;
+            if (qRank[1] && qRank[1][1]===qRank[0][1]) continue;
+            const quantity=Number(qRank[0][0]);
+
+            // Harus ada >=2 bukti RC, >=2 panjang 130, >=2 denominator 9,
+            // dan pola "7g" minimal dua view ATAU "7g" + satu view slash/bare denominator.
+            if (rcViews.size<2 || lenViews.size<2 || denViews.size<2) continue;
+            if (!(glyphViews.size>=2 || (glyphViews.size>=1 && slashViews.size>=1))) continue;
+
+            // Minimal dua keluarga OCR independen pada baris yang sama.
+            const families=new Set(evs.filter(x=>x.ev.rc || x.ev.den9 || x.ev.qty!=null).map(x=>familyV595(x.r)));
+            if (families.size<2) continue;
+
+            const seg=(prepared?.segments||[]).find(s=>Number(s.index)===Number(line));
+            const segY=Number(seg?.y??posisiYHasilV4(recs[0])??NaN);
+
+            // Whole-image tidak boleh dipinjam secara global. Pilih fragmen yang Y-nya dekat
+            // dengan baris kandidat lalu cocokkan 130 + denominator 9 + jumlah yang sama.
+            const wholeNear=(rawRecords||[]).filter(r=>{
+                if (String(r?.source||'').toUpperCase()!=='PADDLE-WHOLE' || Number(r?.score||0)<0.45) return false;
+                const y=posisiYHasilV4(r);
+                if (Number.isFinite(segY) && Number.isFinite(Number(y))) {
+                    const hard=Math.max(42,H*0.065);
+                    if (Math.abs(Number(y)-segY)>hard) return false;
+                }
+                const ev=evidenceRc29MultiViewV596(r?.text||'');
+                return !ev.brc && ev.length130 && ev.den9 && Number(ev.qty)===quantity;
+            });
+            if (!wholeNear.length) continue;
+
+            const score=rcViews.size*4+lenViews.size*2+denViews.size*3+glyphViews.size*4
+                +slashViews.size*2+families.size*3+qRank[0][1]*3+wholeNear.length*4;
+            candidates.push({line,recs,evs,quantity,wholeNear,score,rcViews,lenViews,denViews,glyphViews,slashViews,families,segY});
+        }
+
+        if (!candidates.length) return {rows,recovered:0,debugRecords,reason:'no-safe-candidate'};
+        candidates.sort((a,b)=>b.score-a.score);
+        if (candidates[1] && candidates[0].score-candidates[1].score<5) {
+            return {rows,recovered:0,debugRecords,reason:'ambiguous-lines'};
+        }
+
+        const best=candidates[0];
+        const seed=[...best.recs].sort((a,b)=>Number(b?.score||0)-Number(a?.score||0))[0]||{};
+        const base=bentukNotaDariMaster(master,aliasTipeNotaUntukMaster(master)[0]);
+        const resultText=`${base} = ${best.quantity}`;
+        rows.push({
+            ...seed,
+            source:'OCR-RECOVERY',
+            variant:'RC-130-2-9-MULTIVIEW-V596',
+            lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),
+            canon:{text:resultText,corrected:true,master,ratio:0.025},
+            v3score:690,
+            consensusScore:690,
+            consensusSources:best.families.size+1,
+            consensusSegmentViews:best.denViews.size,
+            lineGuidedV575:true,
+            rc29MultiViewV596:true
+        });
+        rows.sort((a,b)=>{
+            const la=lineIndexHasilV4(a),lb=lineIndexHasilV4(b);
+            if(la!=null&&lb!=null&&la!==lb)return la-lb;
+            return(posisiYHasilV4(a)??1e12)-(posisiYHasilV4(b)??1e12);
+        });
+        debugRecords.push({
+            source:'RECOVERY-V596',
+            variant:'RC-130-2-9-MULTIVIEW-DYNAMIC',
+            lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),
+            score:0.99,
+            text:`${resultText} [qty:${best.quantity}; RC:${best.rcViews.size}; 130:${best.lenViews.size}; den9:${best.denViews.size}; glyph7:${best.glyphViews.size}; slash/bare:${best.slashViews.size}; family:${best.families.size}; whole-dekat:${best.wholeNear.length}; evidence=${best.recs.map(r=>r.text).filter(Boolean).join(' || ')}]`
+        });
+        return {rows,recovered:1,debugRecords,reason:'recovered'};
+    }
+
+
+
+    // ===== V5.97: B.RC 130 9/9 — rescue glyph kolaps 130/136 + g22 =====
+    // Kasus nyata: tulisan "B.RC 130 9/9 = 2" dapat dibaca konsisten sebagai
+    // B.RC136g22 / B.RC.130g22 / B.RC1306g22 / B.RC136%g22.
+    // Lapisan ini APPEND-ONLY dan sengaja sangat ketat:
+    // 1) Data Kayu harus menyisakan tepat SATU BALOK RC panjang 130 denominator 9, yaitu 9/9;
+    // 2) dua crop Paddle asli pada BARIS FISIK YANG SAMA harus membaca literal B.RC;
+    // 3) minimal satu view tetap membaca 130 dengan jelas, sementara >=2 view menunjukkan pola kolaps;
+    // 4) jumlah 2 harus tampak berulang dari OCR (mis. g22 / g 2), bukan diambil dari Data Kayu;
+    // 5) minimal satu PP-OCRv6 dan satu whole-image harus mendukung pola yang sama;
+    // 6) bila ada ukuran/denominator lain yang eksplisit, recovery dibatalkan.
+    function compactBrcV597(raw) {
+        return normalisasiSubscriptV577(normalisasiHasilOCRNota(raw))
+            .toUpperCase()
+            .replace(/[·•]/g,'.')
+            .replace(/\s+/g,'')
+            .replace(/[OQ]/g,m=>m==='O'?'0':'G');
+    }
+
+    function evidenceBrc13099CollapsedV597(raw) {
+        const s=compactBrcV597(raw);
+        const brc=/(?:^|[^A-Z0-9])(?:B|8)[.:;\-]?R[C0](?=[.:;\-\/^%_{}()\[\]0-9]|$)/.test(s);
+        const exact130=/130/.test(s);
+        // 136/138 adalah bentuk kolaps yang berulang ketika nol terakhir 130 menyatu
+        // dengan glyph numerator 9. Tidak dipakai sendirian; harus didukung exact130.
+        const merged13x=/13(?:6|8|B)(?=[G9%\/^_{}()\[\]~|]|2)/.test(s);
+        const conflict=konflikDenominatorBrcV593(raw);
+
+        // Bentuk sasaran yang ditemukan pada diagnosis nyata.
+        const collapse=(
+            /130(?:6)?(?:[\/^_{}()\[\]~|%]*[G9])(?:22|2)(?=$|[^0-9])/.test(s)
+            || /13(?:6|8|B)(?:[\/^_{}()\[\]~|%]*[G9])?(?:22|2)(?=$|[^0-9])/.test(s)
+        );
+        const denGlyph=(
+            /(?:130(?:6)?|13(?:6|8|B))(?:[\/^_{}()\[\]~|%]*[G9])/.test(s)
+            || /13(?:6|8|B)%/.test(s)
+        );
+        const qty2=Number(jumlahBrcV589(raw))===2
+            || /(?:[G9%]|13(?:6|8|B))(?:22|2)(?=$|[^0-9])/.test(s);
+
+        // Jika parser justru menemukan pecahan eksplisit selain denominator 9 atau
+        // numerator selain 9 dengan kekuatan tinggi, jangan paksa menjadi 9/9.
+        const clue=petunjukPecahanV574(raw);
+        const explicitOtherDen=clue?.denominator!=null
+            && Number(clue.denominator)!==9
+            && Number(clue.fractionStrength||0)>=0.90;
+        const explicitOtherNum=clue?.denominator===9
+            && clue?.numerator!=null
+            && Number(clue.numerator)!==9
+            && Number(clue.fractionStrength||0)>=0.95;
+
+        return {s,brc,exact130,merged13x,collapse,denGlyph,qty2,
+            conflict:!!conflict || explicitOtherDen || explicitOtherNum};
+    }
+
+    function rescueBrc13099CollapsedV597(rawRecords, baselineRows, prepared=null) {
+        const rows=[...(baselineRows||[])], debugRecords=[];
+
+        // Data Kayu hanya boleh MELENGKAPI glyph yang kolaps jika kandidat B.RC 130 ?/9
+        // memang tunggal. Ini mencegah 130 6/9 atau ukuran sibling lain dipaksa menjadi 9/9.
+        const den9Masters=(masterData||[]).filter(master=>{
+            if (!master || isSheetItem(master) || canonicalMaterialType(master?.tipe)!=='BALOK RC') return false;
+            const d=parseDimensions(master?.ukuran||'');
+            return !!d && Number(d.t)===130 && Number(d.l)===9;
+        });
+        if (den9Masters.length!==1) return {rows,recovered:0,debugRecords,reason:`master-den9-${den9Masters.length}`};
+        const master=den9Masters[0];
+        const dim=parseDimensions(master?.ukuran||'');
+        if (!dim || Number(dim.p)!==9) return {rows,recovered:0,debugRecords,reason:'master-not-9-9'};
+        if (rows.some(r=>masterSamaTargetV587(r?.canon?.master,'BALOK RC',130,9,9))) {
+            return {rows,recovered:0,debugRecords,reason:'already'};
+        }
+
+        const occupiedLines=new Set((rows||[]).map(r=>lineIndexHasilV4(r)).filter(v=>v!=null).map(Number));
+        const byLine=new Map();
+        for (const r of rawRecords||[]) {
+            const src=String(r?.source||'').toUpperCase();
+            if (!(src==='PADDLE' || src.startsWith('PADDLE-V6'))) continue;
+            const line=lineIndexHasilV4(r);
+            if (line==null || Number(r?.score||0)<0.55) continue;
+            if (!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+
+        const H=Math.max(1,Number(prepared?.base?.height||1600));
+        const candidates=[];
+        for (const [line,recs] of byLine) {
+            if (occupiedLines.has(Number(line))) continue; // append-only: jangan menimpa keputusan lama
+            const evs=recs.map(r=>({r,ev:evidenceBrc13099CollapsedV597(r?.text||'')}));
+            if (evs.some(x=>x.ev.conflict)) continue;
+
+            const original=evs.filter(x=>String(x.r?.source||'').toUpperCase()==='PADDLE'
+                && Number(x.r?.score||0)>=0.65 && x.ev.brc && x.ev.collapse);
+            const originalViews=new Set(original.map(x=>String(x.r?.variant||'PADDLE')));
+            if (originalViews.size<2) continue;
+
+            const brcViews=new Set(evs.filter(x=>x.ev.brc).map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const exact130Views=new Set(evs.filter(x=>x.ev.brc && x.ev.exact130).map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const collapseViews=new Set(evs.filter(x=>x.ev.brc && x.ev.collapse).map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const denViews=new Set(evs.filter(x=>x.ev.brc && x.ev.denGlyph).map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const qty2Views=new Set(evs.filter(x=>x.ev.brc && x.ev.qty2).map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const v6Support=evs.filter(x=>String(x.r?.source||'').toUpperCase().startsWith('PADDLE-V6')
+                && x.ev.brc && x.ev.collapse && x.ev.qty2);
+
+            if (brcViews.size<3 || exact130Views.size<1 || collapseViews.size<3 || denViews.size<2 || qty2Views.size<3) continue;
+            if (!v6Support.length) continue;
+
+            const seg=(prepared?.segments||[]).find(s=>Number(s.index)===Number(line));
+            const segY=Number(seg?.y??posisiYHasilV4(recs[0])??NaN);
+            const whole=(rawRecords||[]).filter(r=>{
+                if (String(r?.source||'').toUpperCase()!=='PADDLE-WHOLE' || Number(r?.score||0)<0.55) return false;
+                const ev=evidenceBrc13099CollapsedV597(r?.text||'');
+                if (!ev.brc || !ev.collapse || !ev.qty2 || ev.conflict) return false;
+                const y=posisiYHasilV4(r);
+                if (Number.isFinite(segY) && Number.isFinite(Number(y))) {
+                    const hard=Math.max(48,H*0.075);
+                    if (Math.abs(Number(y)-segY)>hard) return false;
+                }
+                return true;
+            });
+            const wholeViews=new Set(whole.map(r=>String(r?.variant||'WHOLE')));
+            if (wholeViews.size<1) continue;
+
+            const score=originalViews.size*6+brcViews.size*3+exact130Views.size*4+collapseViews.size*4
+                +denViews.size*3+qty2Views.size*4+v6Support.length*5+wholeViews.size*5;
+            candidates.push({line,recs,evs,whole,score,segY,originalViews,brcViews,exact130Views,collapseViews,denViews,qty2Views,v6Support,wholeViews});
+        }
+
+        if (!candidates.length) return {rows,recovered:0,debugRecords,reason:'no-safe-candidate'};
+        candidates.sort((a,b)=>b.score-a.score);
+        if (candidates[1] && candidates[0].score-candidates[1].score<6) {
+            return {rows,recovered:0,debugRecords,reason:'ambiguous-lines'};
+        }
+
+        const best=candidates[0];
+        const seed=[...best.recs,...best.whole].sort((a,b)=>Number(b?.score||0)-Number(a?.score||0))[0]||{};
+        const base=bentukNotaDariMaster(master,aliasTipeNotaUntukMaster(master)[0]);
+        const resultText=`${base} = 2`;
+        rows.push({...seed,
+            source:'OCR-RECOVERY',variant:'BRC-130-9-9-COLLAPSE-V597',lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),
+            canon:{text:resultText,corrected:true,master,ratio:0.006},
+            v3score:930,consensusScore:930,consensusSources:3,
+            consensusSegmentViews:best.collapseViews.size,lineGuidedV575:true,brcCollapseV597:true
+        });
+        rows.sort((a,b)=>{
+            const la=lineIndexHasilV4(a),lb=lineIndexHasilV4(b);
+            if(la!=null&&lb!=null&&la!==lb)return la-lb;
+            return(posisiYHasilV4(a)??1e12)-(posisiYHasilV4(b)??1e12);
+        });
+        debugRecords.push({source:'RECOVERY-V597',variant:'BRC-130-9-9-130-136-G22',lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),score:0.99,
+            text:`${resultText} [2 crop asli B.RC; exact130:${best.exact130Views.size}; collapse:${best.collapseViews.size}; den:${best.denViews.size}; qty2:${best.qty2Views.size}; v6:${best.v6Support.length}; whole:${best.wholeViews.size}; evidence=${best.recs.map(r=>r.text).filter(Boolean).join(' || ')}]`});
+        return {rows,recovered:1,debugRecords,reason:'recovered'};
+    }
+
+
+    // ===== V6.00: B.RC 130 9/9 — DYNAMIC QUANTITY =====
+    // Memperluas V5.97 tanpa mengubah hasil lama. Kasus nyata:
+    // B.RC.1301g24 / B.RC.130lg24 / B.RC.130/g24 dengan QTY-KANAN=4
+    // berarti B.RC 130 9/9 = 4. Jumlah TIDAK pernah di-hard-code.
+    // Pengaman:
+    // 1) Data Kayu harus punya tepat satu BALOK RC 130 ?/9 dan harus 9/9;
+    // 2) dua view Paddle asli pada baris yang sama harus melihat B.RC + 130 + glyph denominator 9;
+    // 3) minimal satu PP-OCRv6 dan satu whole-image harus mendukung;
+    // 4) jumlah diprioritaskan dari PADDLE-QTY pada baris/segmen B.RC yang sama/bertumpuk;
+    // 5) bila QTY tidak tersedia, tail OCR harus sepakat lintas >=2 keluarga;
+    // 6) denominator eksplisit selain 9 membatalkan recovery.
+    function compactBrcV600(raw) {
+        return normalisasiSubscriptV577(normalisasiHasilOCRNota(raw))
+            .toUpperCase().replace(/[·•]/g,'.').replace(/\s+/g,'')
+            .replace(/[OQ]/g,m=>m==='O'?'0':'G')
+            .replace(/[√✓✔]+$/g,'');
+    }
+
+    function evidenceBrc13099DynamicV600(raw) {
+        const s=compactBrcV600(raw);
+        const brc=/(?:^|[^A-Z0-9])(?:B|8)[.:;\-]?R[C0](?=[.:;\-\/^%_{}()\[\]0-9]|$)/.test(s)
+            || /(?:^|[^A-Z0-9])(?:B|8)[.:;\-]?[2Z]C(?=[.:;\-\/^%_{}()\[\]0-9]|$)/.test(s);
+        const exact130=/130/.test(s);
+        const conflict=konflikDenominatorBrcV593(raw);
+        // 9/9 pada tulisan nyata berulang kali menjadi 1g, lg, /g, g, 9g atau 19.
+        // Huruf L/I/J hanya diterima di modul B.RC ini dan tetap memerlukan konsensus multi-view.
+        const denGlyph=/130(?:[1ILJ]|9)?[\/^_{}()\[\]~|%]*[G9]/.test(s)
+            || /130[\/^_{}()\[\]~|%]+[G9]/.test(s)
+            || /130(?:19|9G|G9)/.test(s);
+        return {s,brc,exact130,denGlyph,conflict:!!conflict};
+    }
+
+    function jumlahTailBrcV600(raw) {
+        const direct=jumlahBrcV589(raw);
+        if (Number.isFinite(Number(direct)) && Number(direct)>=1 && Number(direct)<=99) return Number(direct);
+        const s=compactBrcV600(raw);
+        // Pola diagnosis: ...1g24 => glyph pecahan + artefak '='/'2' + jumlah 4.
+        // Bentuk lama ...g22 juga tetap menghasilkan 2.
+        let m=s.match(/[G9](?:2|Z)([1-9])(?=$|[^0-9])/);
+        if (m) return Number(m[1]);
+        // Cadangan lebih sempit: .../g4 atau ...g4 di ujung, hanya dipakai setelah
+        // bukti B.RC 130 9/9 sudah dikunci oleh fungsi pemanggil.
+        m=s.match(/[G9](?:=|:|;|\-)?([1-9])$/);
+        return m ? Number(m[1]) : null;
+    }
+
+    function rescueBrc13099DynamicQtyV600(rawRecords, baselineRows, prepared=null) {
+        const rows=[...(baselineRows||[])],debugRecords=[];
+        const den9Masters=(masterData||[]).filter(master=>{
+            if(!master || isSheetItem(master) || canonicalMaterialType(master?.tipe)!=='BALOK RC') return false;
+            const d=parseDimensions(master?.ukuran||'');
+            return !!d && Number(d.t)===130 && Number(d.l)===9;
+        });
+        if(den9Masters.length!==1) return {rows,recovered:0,debugRecords,reason:`master-den9-${den9Masters.length}`};
+        const master=den9Masters[0],dim=parseDimensions(master?.ukuran||'');
+        if(!dim || Number(dim.p)!==9) return {rows,recovered:0,debugRecords,reason:'master-not-9-9'};
+        if(rows.some(r=>masterSamaTargetV587(r?.canon?.master,'BALOK RC',130,9,9))) {
+            return {rows,recovered:0,debugRecords,reason:'already'};
+        }
+
+        const occupiedLines=new Set((rows||[]).map(r=>lineIndexHasilV4(r)).filter(v=>v!=null).map(Number));
+        const byLine=new Map();
+        for(const r of rawRecords||[]) {
+            const src=String(r?.source||'').toUpperCase();
+            if(!(src==='PADDLE' || src.startsWith('PADDLE-V6'))) continue;
+            const line=lineIndexHasilV4(r);
+            if(line==null || Number(r?.score||0)<0.50) continue;
+            if(!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+
+        // Baris tetangga yang juga jelas B.RC digunakan hanya untuk mengaitkan QTY crop
+        // ketika segmentasi membelah satu tulisan fisik menjadi dua indeks berurutan.
+        const brcNeighborLines=new Set();
+        for(const [line,recs] of byLine) {
+            if(recs.some(r=>{const e=evidenceBrc13099DynamicV600(r?.text||'');return e.brc&&e.exact130;})) brcNeighborLines.add(Number(line));
+        }
+
+        const H=Math.max(1,Number(prepared?.base?.height||1600));
+        const candidates=[];
+        for(const [line,recs] of byLine) {
+            if(occupiedLines.has(Number(line))) continue;
+            const evs=recs.map(r=>({r,ev:evidenceBrc13099DynamicV600(r?.text||'')}));
+            if(evs.some(x=>x.ev.conflict)) continue;
+
+            const original=evs.filter(x=>String(x.r?.source||'').toUpperCase()==='PADDLE'
+                && Number(x.r?.score||0)>=0.62 && x.ev.brc && x.ev.exact130 && x.ev.denGlyph);
+            const originalViews=new Set(original.map(x=>String(x.r?.variant||'PADDLE')));
+            if(originalViews.size<2) continue;
+
+            const brcViews=new Set(evs.filter(x=>x.ev.brc&&x.ev.exact130)
+                .map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const denViews=new Set(evs.filter(x=>x.ev.brc&&x.ev.exact130&&x.ev.denGlyph)
+                .map(x=>`${String(x.r?.source||'').toUpperCase()}:${x.r?.variant||''}`));
+            const v6Support=evs.filter(x=>String(x.r?.source||'').toUpperCase().startsWith('PADDLE-V6')
+                && x.ev.brc&&x.ev.exact130&&x.ev.denGlyph);
+            if(brcViews.size<3 || denViews.size<3 || !v6Support.length) continue;
+
+            const seg=(prepared?.segments||[]).find(s=>Number(s.index)===Number(line));
+            const segY=Number(seg?.y??posisiYHasilV4(recs[0])??NaN);
+            const whole=(rawRecords||[]).filter(r=>{
+                if(String(r?.source||'').toUpperCase()!=='PADDLE-WHOLE' || Number(r?.score||0)<0.52) return false;
+                const ev=evidenceBrc13099DynamicV600(r?.text||'');
+                if(!ev.brc || !ev.exact130 || !ev.denGlyph || ev.conflict) return false;
+                const y=posisiYHasilV4(r);
+                if(Number.isFinite(segY)&&Number.isFinite(Number(y))) {
+                    const hard=Math.max(55,H*0.085);
+                    if(Math.abs(Number(y)-segY)>hard) return false;
+                }
+                return true;
+            });
+            const wholeViews=new Set(whole.map(r=>String(r?.variant||'WHOLE')));
+            if(wholeViews.size<1) continue;
+
+            const qtyRecords=(rawRecords||[]).filter(r=>{
+                if(String(r?.source||'').toUpperCase()!=='PADDLE-QTY' || Number(r?.score||0)<0.35) return false;
+                const qline=lineIndexHasilV4(r);
+                if(qline!=null && Number(qline)===Number(line)) return true;
+                if(qline!=null && Math.abs(Number(qline)-Number(line))<=1 && brcNeighborLines.has(Number(qline))) return true;
+                const y=posisiYHasilV4(r);
+                if(Number.isFinite(segY)&&Number.isFinite(Number(y))) {
+                    return Math.abs(Number(y)-segY)<=Math.max(60,H*0.09);
+                }
+                return false;
+            });
+            const qtyCrop=pilihJumlahKhususKananV24(qtyRecords);
+
+            const voteRecords=[...recs,...whole];
+            const votes=new Map();
+            for(const r of voteRecords) {
+                const q=jumlahTailBrcV600(r?.text||'');
+                if(!Number.isFinite(q)||q<1||q>99) continue;
+                const family=String(r?.source||'').toUpperCase();
+                const key=Number(q);
+                if(!votes.has(key)) votes.set(key,{q:key,count:0,score:0,families:new Set(),views:new Set()});
+                const v=votes.get(key);v.count++;v.score+=1+Math.max(0,Math.min(1,Number(r?.score||0)));
+                v.families.add(family);v.views.add(`${family}:${r?.variant||''}`);
+            }
+            const ranked=[...votes.values()].sort((a,b)=>(b.score-a.score)||(b.count-a.count));
+            const top=ranked[0]||null;
+            let quantity=null,qtySource='';
+            if(Number.isFinite(Number(qtyCrop))) {
+                quantity=Number(qtyCrop);qtySource='QTY-KANAN';
+                // Jika tail OCR sangat kuat tetapi berbeda, jangan memaksakan QTY crop.
+                if(top && top.q!==quantity && top.count>=3 && top.families.size>=2) continue;
+            } else if(top && top.count>=3 && top.families.size>=2 && top.views.size>=3) {
+                if(ranked[1] && top.score-ranked[1].score<1.2) continue;
+                quantity=top.q;qtySource='KONSENSUS-TAIL';
+            }
+            if(!Number.isFinite(quantity)||quantity<1||quantity>99) continue;
+
+            // Jika QTY crop ada, minimal satu tail harus menguatkan jumlah yang sama.
+            const sameTail=top && top.q===quantity ? top.count : voteRecords.filter(r=>Number(jumlahTailBrcV600(r?.text||''))===quantity).length;
+            if(qtySource==='QTY-KANAN' && sameTail<1) continue;
+
+            const score=originalViews.size*7+brcViews.size*3+denViews.size*4+v6Support.length*5
+                +wholeViews.size*5+(qtySource==='QTY-KANAN'?10:5)+sameTail*3;
+            candidates.push({line,recs,whole,qtyRecords,quantity,qtySource,sameTail,score,segY,
+                originalViews,brcViews,denViews,v6Support,wholeViews});
+        }
+
+        if(!candidates.length) return {rows,recovered:0,debugRecords,reason:'no-safe-candidate'};
+        candidates.sort((a,b)=>b.score-a.score);
+        if(candidates[1] && candidates[0].score-candidates[1].score<6) return {rows,recovered:0,debugRecords,reason:'ambiguous-lines'};
+        const best=candidates[0];
+        const seed=[...best.recs,...best.whole,...best.qtyRecords].sort((a,b)=>Number(b?.score||0)-Number(a?.score||0))[0]||{};
+        const base=bentukNotaDariMaster(master,aliasTipeNotaUntukMaster(master)[0]);
+        const resultText=`${base} = ${best.quantity}`;
+        rows.push({...seed,source:'OCR-RECOVERY',variant:'BRC-130-9-9-DYNAMIC-QTY-V600',lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),
+            canon:{text:resultText,corrected:true,master,ratio:0.004},v3score:980,consensusScore:980,
+            consensusSources:4,consensusSegmentViews:best.denViews.size,lineGuidedV575:true,brcDynamicQtyV600:true});
+        rows.sort((a,b)=>{const la=lineIndexHasilV4(a),lb=lineIndexHasilV4(b);if(la!=null&&lb!=null&&la!==lb)return la-lb;return(posisiYHasilV4(a)??1e12)-(posisiYHasilV4(b)??1e12)});
+        debugRecords.push({source:'RECOVERY-V600',variant:'BRC-130-9-9-DYNAMIC-QTY',lineIndex:Number(best.line),
+            y:Number.isFinite(best.segY)?best.segY:posisiYHasilV4(seed),score:0.99,
+            text:`${resultText} [qty:${best.quantity} via ${best.qtySource}; QTY-crop:${best.qtyRecords.map(r=>r.text).filter(Boolean).join(' || ')||'-'}; tail-sama:${best.sameTail}; original:${best.originalViews.size}; den:${best.denViews.size}; v6:${best.v6Support.length}; whole:${best.wholeViews.size}; evidence=${best.recs.map(r=>r.text).filter(Boolean).join(' || ')}]`});
+        return {rows,recovered:1,debugRecords,reason:'recovered',quantity:best.quantity,quantitySource:best.qtySource};
+    }
+
+
+
+    // ===== V6.01: B.RC 130 9/9 — PHYSICAL CLUSTER + DEDICATED QTY =====
+    // Perbaikan terhadap V6.00:
+    // - satu tulisan B.RC sering tersegmentasi menjadi dua lineIndex berurutan;
+    // - PADDLE-QTY adalah crop KHUSUS jumlah, sehingga satu digit confidence tinggi
+    //   (mis. QTY-KANAN-58 = "4" 81%) boleh menjadi bukti kuat;
+    // - baris yang sudah terisi tidak otomatis memblokir rescue. Yang diblokir hanya
+    //   konflik pecahan eksplisit / material BALOK RC lain yang sudah sangat kuat;
+    // - target Data Kayu dicari PERSIS B.RC 130 9/9, bukan mensyaratkan semua B.RC 130 ?/9 tunggal.
+    function targetBrc13099V601() {
+        const matches=(masterData||[]).filter(master=>{
+            if(!master || isSheetItem(master) || canonicalMaterialType(master?.tipe)!=='BALOK RC') return false;
+            const d=parseDimensions(master?.ukuran||'');
+            return !!d && Number(d.t)===130 && Number(d.p)===9 && Number(d.l)===9;
+        });
+        const unique=new Map(matches.map(m=>[`${canonicalMaterialType(m?.tipe)}:${normalizeDimKey(m?.ukuran||'')}`,m]));
+        return unique.size===1 ? [...unique.values()][0] : null;
+    }
+
+    function buktiBrcV601(raw) {
+        const base=evidenceBrc13099DynamicV600(raw);
+        const clue=petunjukPecahanV574(raw);
+        const explicitOtherDen=clue?.denominator!=null
+            && Number(clue.denominator)!==9
+            && Number(clue.fractionStrength||0)>=0.88;
+        const explicitOtherNum=clue?.denominator===9
+            && clue?.numerator!=null
+            && Number(clue.numerator)!==9
+            && Number(clue.fractionStrength||0)>=0.94;
+        return {...base, conflict:!!base.conflict || explicitOtherDen || explicitOtherNum};
+    }
+
+    function qtyDedicatedBrcV601(records) {
+        const votes=new Map();
+        for(const r of records||[]) {
+            if(String(r?.source||'').toUpperCase()!=='PADDLE-QTY') continue;
+            const score=Number(r?.score||0);
+            if(score<0.45) continue;
+            const raw=normalisasiHasilOCRNota(r?.text||'').trim();
+            let q=null;
+            // Karena ini crop khusus sisi kanan, satu angka saja adalah bukti valid.
+            let m=raw.match(/^\s*([1-9]|1[0-9])\s*$/);
+            if(m && score>=0.60) q=Number(m[1]);
+            if(q==null) {
+                const e=jumlahEksplisitV3(raw,false);
+                if(e && Number.isFinite(Number(e.n)) && (e.kind!=='ujung' || score>=0.60)) q=Number(e.n);
+            }
+            if(q==null) {
+                const tail=jumlahTailBrcV600(raw);
+                if(Number.isFinite(Number(tail))) q=Number(tail);
+            }
+            if(!Number.isFinite(q) || q<1 || q>99) continue;
+            const key=Number(q);
+            if(!votes.has(key)) votes.set(key,{q:key,score:0,count:0,views:new Set(),records:[]});
+            const v=votes.get(key);
+            v.count++;
+            // QTY-KANAN-58 diberi sedikit prioritas karena crop lebih sempit.
+            const bonus=/58/.test(String(r?.variant||''))?0.35:0;
+            v.score+=1+Math.max(0,Math.min(1,score))+bonus;
+            v.views.add(String(r?.variant||''));
+            v.records.push(r);
+        }
+        const ranked=[...votes.values()].sort((a,b)=>(b.score-a.score)||(b.count-a.count));
+        if(!ranked.length) return null;
+        if(ranked[1] && ranked[0].score-ranked[1].score<0.55) return null;
+        return ranked[0];
+    }
+
+    function rescueBrc13099PhysicalClusterV601(rawRecords, baselineRows, prepared=null) {
+        let rows=[...(baselineRows||[])];
+        const debugRecords=[];
+        const master=targetBrc13099V601();
+        if(!master) {
+            debugRecords.push({source:'RECOVERY-V601-DIAG',variant:'BRC-130-9-9-TARGET-MASTER',lineIndex:null,y:null,score:0,
+                text:'B.RC 130 9/9 belum dipulihkan [master 130 9/9 tidak ada atau duplikat di Data Kayu]'});
+            return {rows,recovered:0,debugRecords,reason:'target-130-9-9-not-unique'};
+        }
+        if(rows.some(r=>masterSamaTargetV587(r?.canon?.master,'BALOK RC',130,9,9))) {
+            return {rows,recovered:0,debugRecords,reason:'already'};
+        }
+
+        const H=Math.max(1,Number(prepared?.base?.height||1600));
+        const allLineRecords=(rawRecords||[]).filter(r=>{
+            const src=String(r?.source||'').toUpperCase();
+            return (src==='PADDLE' || src.startsWith('PADDLE-V6'))
+                && lineIndexHasilV4(r)!=null && Number(r?.score||0)>=0.45;
+        });
+        const byLine=new Map();
+        for(const r of allLineRecords) {
+            const line=Number(lineIndexHasilV4(r));
+            if(!byLine.has(line)) byLine.set(line,[]);
+            byLine.get(line).push(r);
+        }
+
+        // Kandidat line dasar: minimal satu literal/fuzzy B.RC + panjang 130.
+        const seedLines=[];
+        for(const [line,recs] of byLine) {
+            const evs=recs.map(r=>({r,ev:buktiBrcV601(r?.text||'')}));
+            const positive=evs.filter(x=>x.ev.brc&&x.ev.exact130&&!x.ev.conflict);
+            if(!positive.length) continue;
+            const seg=(prepared?.segments||[]).find(s=>Number(s.index)===line);
+            const y=Number(seg?.y??posisiYHasilV4(recs[0])??NaN);
+            seedLines.push({line,y,recs,evs});
+        }
+        if(!seedLines.length) {
+            debugRecords.push({source:'RECOVERY-V601-DIAG',variant:'BRC-130-9-9-NO-BRC130-LINE',lineIndex:null,y:null,score:0,
+                text:'B.RC 130 9/9 belum dipulihkan [tidak ada cluster B.RC + 130 pada hasil Paddle/V6]'});
+            return {rows,recovered:0,debugRecords,reason:'no-brc130-line'};
+        }
+        seedLines.sort((a,b)=>a.line-b.line);
+
+        // Gabungkan indeks bertetangga bila posisi Y berdekatan. Ini menangani contoh
+        // line 3 = B.RC.1301g24 dan line 4 = B.RC.130J1 / B.RC.1301g24J.
+        const clusters=[];
+        for(const item of seedLines) {
+            const last=clusters[clusters.length-1];
+            const closeLine=last && item.line-last.maxLine<=1;
+            const closeY=last && Number.isFinite(item.y) && Number.isFinite(last.lastY)
+                ? Math.abs(item.y-last.lastY)<=Math.max(52,H*0.075)
+                : closeLine;
+            if(last && closeLine && closeY) {
+                last.items.push(item); last.maxLine=item.line; last.lastY=item.y;
+            } else {
+                clusters.push({items:[item],minLine:item.line,maxLine:item.line,lastY:item.y});
+            }
+        }
+
+        const candidates=[];
+        for(const cluster of clusters) {
+            const lineSet=new Set(cluster.items.map(x=>x.line));
+            const recs=cluster.items.flatMap(x=>x.recs);
+            const evs=recs.map(r=>({r,ev:buktiBrcV601(r?.text||'')}));
+            if(evs.some(x=>x.ev.conflict)) continue;
+
+            const original=evs.filter(x=>String(x.r?.source||'').toUpperCase()==='PADDLE'
+                && Number(x.r?.score||0)>=0.62 && x.ev.brc && x.ev.exact130 && x.ev.denGlyph);
+            const originalViews=new Set(original.map(x=>`${lineIndexHasilV4(x.r)}:${x.r?.variant||'PADDLE'}`));
+            const brcViews=new Set(evs.filter(x=>x.ev.brc&&x.ev.exact130)
+                .map(x=>`${String(x.r?.source||'').toUpperCase()}:${lineIndexHasilV4(x.r)}:${x.r?.variant||''}`));
+            const denViews=new Set(evs.filter(x=>x.ev.brc&&x.ev.exact130&&x.ev.denGlyph)
+                .map(x=>`${String(x.r?.source||'').toUpperCase()}:${lineIndexHasilV4(x.r)}:${x.r?.variant||''}`));
+            const v6Support=evs.filter(x=>String(x.r?.source||'').toUpperCase().startsWith('PADDLE-V6')
+                && x.ev.brc&&x.ev.exact130&&x.ev.denGlyph);
+            if(originalViews.size<2 || brcViews.size<3 || denViews.size<3 || !v6Support.length) continue;
+
+            const ys=cluster.items.map(x=>x.y).filter(Number.isFinite);
+            const clusterY=ys.length?ys.reduce((a,b)=>a+b,0)/ys.length:NaN;
+            const whole=(rawRecords||[]).filter(r=>{
+                if(String(r?.source||'').toUpperCase()!=='PADDLE-WHOLE' || Number(r?.score||0)<0.50) return false;
+                const ev=buktiBrcV601(r?.text||'');
+                if(!ev.brc || !ev.exact130 || !ev.denGlyph || ev.conflict) return false;
+                const y=posisiYHasilV4(r);
+                if(Number.isFinite(clusterY)&&Number.isFinite(Number(y))) {
+                    return Math.abs(Number(y)-clusterY)<=Math.max(72,H*0.105);
+                }
+                // Jika whole tidak punya Y, hanya aman saat kandidat cluster B.RC cuma satu.
+                return clusters.length===1;
+            });
+            const wholeViews=new Set(whole.map(r=>String(r?.variant||'WHOLE')));
+            if(wholeViews.size<1) continue;
+
+            // Ambil QTY dari line cluster atau satu indeks di sebelahnya (segmentasi QTY sering bergeser).
+            const qtyRecords=(rawRecords||[]).filter(r=>{
+                if(String(r?.source||'').toUpperCase()!=='PADDLE-QTY') return false;
+                const qline=lineIndexHasilV4(r);
+                if(qline!=null && [...lineSet].some(line=>Math.abs(Number(qline)-Number(line))<=1)) return true;
+                const y=posisiYHasilV4(r);
+                return Number.isFinite(clusterY)&&Number.isFinite(Number(y))
+                    && Math.abs(Number(y)-clusterY)<=Math.max(78,H*0.115);
+            });
+            const dedicated=qtyDedicatedBrcV601(qtyRecords);
+
+            // Konsensus jumlah dari tail OCR (contoh g24 -> 4).
+            const voteRecords=[...recs,...whole];
+            const votes=new Map();
+            for(const r of voteRecords) {
+                const q=jumlahTailBrcV600(r?.text||'');
+                if(!Number.isFinite(q)||q<1||q>99) continue;
+                const family=String(r?.source||'').toUpperCase();
+                if(!votes.has(q)) votes.set(q,{q,count:0,score:0,families:new Set(),views:new Set()});
+                const v=votes.get(q); v.count++; v.score+=1+Math.max(0,Math.min(1,Number(r?.score||0)));
+                v.families.add(family); v.views.add(`${family}:${lineIndexHasilV4(r)}:${r?.variant||''}`);
+            }
+            const ranked=[...votes.values()].sort((a,b)=>(b.score-a.score)||(b.count-a.count));
+            const top=ranked[0]||null;
+            let quantity=null,qtySource='';
+            if(dedicated) {
+                quantity=dedicated.q; qtySource='QTY-KANAN-KHUSUS';
+                // Tail yang berlawanan hanya membatalkan jika benar-benar dominan lintas keluarga.
+                if(top && top.q!==quantity && top.count>=4 && top.families.size>=2 && top.score>dedicated.score+2.5) continue;
+            } else if(top && top.count>=3 && top.families.size>=2 && top.views.size>=3) {
+                if(ranked[1] && top.score-ranked[1].score<1.0) continue;
+                quantity=top.q; qtySource='KONSENSUS-TAIL';
+            }
+            if(!Number.isFinite(quantity)||quantity<1||quantity>99) continue;
+
+            const sameTail=voteRecords.filter(r=>Number(jumlahTailBrcV600(r?.text||''))===Number(quantity)).length;
+            // QTY khusus confidence tinggi boleh berdiri dengan minimal satu penguat tail.
+            if(dedicated && dedicated.score<1.60 && sameTail<1) continue;
+            if(!dedicated && sameTail<3) continue;
+
+            // Jangan menghapus material non-B.RC. Hanya kandidat BALOK RC lemah pada cluster
+            // yang boleh diganti setelah bukti visual 9/9 + quantity di atas sudah lolos.
+            const replaceIndexes=[];
+            for(let i=0;i<rows.length;i++) {
+                const row=rows[i];
+                const line=lineIndexHasilV4(row);
+                if(line==null || ![...lineSet].some(x=>Math.abs(Number(line)-Number(x))<=1)) continue;
+                const m=row?.canon?.master;
+                if(canonicalMaterialType(m?.tipe)!=='BALOK RC') continue;
+                if(masterSamaTargetV587(m,'BALOK RC',130,9,9)) continue;
+                const d=parseDimensions(m?.ukuran||'');
+                // Bila baseline punya denominator eksplisit selain 9, jangan koreksi.
+                if(d && Number(d.l)!==9 && Number(row?.canon?.ratio||1)<=0.12) {
+                    replaceIndexes.length=0;
+                    quantity=null;
+                    break;
+                }
+                replaceIndexes.push(i);
+            }
+            if(!Number.isFinite(quantity)) continue;
+
+            const anchor=cluster.items.slice().sort((a,b)=>{
+                const sa=a.recs.reduce((n,r)=>n+Number(r?.score||0),0), sb=b.recs.reduce((n,r)=>n+Number(r?.score||0),0);
+                return sb-sa;
+            })[0];
+            const line=Number(anchor?.line??cluster.minLine);
+            const score=originalViews.size*7+brcViews.size*3+denViews.size*4+v6Support.length*5
+                +wholeViews.size*5+(dedicated?12:5)+sameTail*3;
+            candidates.push({cluster,line,recs,whole,qtyRecords,dedicated,quantity,qtySource,sameTail,score,clusterY,
+                originalViews,brcViews,denViews,v6Support,wholeViews,replaceIndexes});
+        }
+
+        if(!candidates.length) {
+            // Diagnosis sengaja ditampilkan supaya tes HTML berikutnya memberi alasan konkret.
+            const glimpse=seedLines.slice(0,3).flatMap(x=>x.recs).map(r=>r?.text).filter(Boolean).slice(0,8).join(' || ');
+            debugRecords.push({source:'RECOVERY-V601-DIAG',variant:'BRC-130-9-9-CLUSTER-NO-CANDIDATE',lineIndex:seedLines[0]?.line??null,
+                y:seedLines[0]?.y??null,score:0,text:`B.RC 9/9 belum dipulihkan [seed=${seedLines.length}; evidence=${glimpse||'-'}]`});
+            return {rows,recovered:0,debugRecords,reason:'no-safe-cluster'};
+        }
+        candidates.sort((a,b)=>b.score-a.score);
+        if(candidates[1] && candidates[0].score-candidates[1].score<5) {
+            debugRecords.push({source:'RECOVERY-V601-DIAG',variant:'BRC-130-9-9-AMBIGUOUS-CLUSTER',lineIndex:candidates[0].line,
+                y:candidates[0].clusterY,score:0,text:`B.RC 9/9 ambigu [score ${candidates[0].score.toFixed(1)} vs ${candidates[1].score.toFixed(1)}]`});
+            return {rows,recovered:0,debugRecords,reason:'ambiguous-cluster'};
+        }
+
+        const best=candidates[0];
+        if(best.replaceIndexes.length) {
+            const drop=new Set(best.replaceIndexes);
+            rows=rows.filter((_,i)=>!drop.has(i));
+        }
+        const seed=[...best.recs,...best.whole,...best.qtyRecords].sort((a,b)=>Number(b?.score||0)-Number(a?.score||0))[0]||{};
+        const base=bentukNotaDariMaster(master,aliasTipeNotaUntukMaster(master)[0]);
+        const resultText=`${base} = ${best.quantity}`;
+        rows.push({...seed,source:'OCR-RECOVERY',variant:'BRC-130-9-9-PHYSICAL-CLUSTER-V601',lineIndex:best.line,
+            y:Number.isFinite(best.clusterY)?best.clusterY:posisiYHasilV4(seed),
+            canon:{text:resultText,corrected:true,master,ratio:0.003},v3score:1040,consensusScore:1040,
+            consensusSources:4,consensusSegmentViews:best.denViews.size,lineGuidedV575:true,brcPhysicalClusterV601:true});
+        rows.sort((a,b)=>{const la=lineIndexHasilV4(a),lb=lineIndexHasilV4(b);if(la!=null&&lb!=null&&la!==lb)return la-lb;return(posisiYHasilV4(a)??1e12)-(posisiYHasilV4(b)??1e12)});
+        debugRecords.push({source:'RECOVERY-V601',variant:'BRC-130-9-9-PHYSICAL-CLUSTER',lineIndex:best.line,
+            y:Number.isFinite(best.clusterY)?best.clusterY:posisiYHasilV4(seed),score:0.99,
+            text:`${resultText} [qty:${best.quantity} via ${best.qtySource}; QTY:${best.qtyRecords.map(r=>`${r.variant}:${r.text}`).filter(Boolean).join(' || ')||'-'}; tail-sama:${best.sameTail}; lines:${best.cluster.minLine}-${best.cluster.maxLine}; original:${best.originalViews.size}; den:${best.denViews.size}; v6:${best.v6Support.length}; whole:${best.wholeViews.size}]`});
+        return {rows,recovered:1,debugRecords,reason:'recovered',quantity:best.quantity,quantitySource:best.qtySource};
+    }
+
+
+
+    // ===== V5.98 SMART OCR PIPELINE =====
+    // Tujuan: mempercepat tanpa menghapus jalur akurasi lama.
+    // - pass pertama hanya TIGHT-ASLI;
+    // - WIDE-RATA hanya untuk baris material/ambigu;
+    // - TrOCR/Tesseract umum tidak membaca judul, tanggal, tanda tangan, atau baris RC/B.RC
+    //   yang mempunyai rescue PP-OCRv6 khusus;
+    // - whole-image dilewati hanya pada nota yang benar-benar sudah kuat;
+    // - full-scan RC V580/V581/V582 + TrOCR legacy hanya berjalan bila ada petunjuk PAPAN RC.
+    // Semua rescue V5.97 dan sebelumnya tetap dipertahankan.
+    function smartNoiseNotaV598(raw) {
+        const text=normalisasiHasilOCRNota(raw).toUpperCase().replace(/\s+/g,' ').trim();
+        if (!text) return false;
+        if (/\b(?:NOTA|PENGAMBILAN|MATERIAL|TJIWI|TIWI|KIMIA|PAPER|PRODUCTS?)\b/.test(text)) return true;
+        // Tanggal/header tanpa token material.
+        if (!/(?:B\.?\s*R\s*C|\bRC\b|B\.?\s*(?:SG|S)\b|\bSG\b|PLY|MDF)/.test(text)
+            && /(?:^|\s)\d{1,2}\s*[-/.]\s*\d{1,2}\s*[-/.]\s*20\d{2}(?:\s|$)/.test(text)) return true;
+        return false;
+    }
+
+    function smartKeluargaRcV598(raw) {
+        const text=normalisasiSubscriptV577(normalisasiHasilOCRNota(raw)).toUpperCase().replace(/\s+/g,'');
+        const brc=/(?:^|[^A-Z0-9])(?:B|8)[.:;\-]?(?:R[C0OQG]|[2Z]C)/.test(text);
+        if (brc && /13[0-9OQ]/.test(text)) return 'BRC';
+        if (!brc) {
+            // V5.99: Smart Gate harus sekurang-kurangnya selonggar parser akurasi lama.
+            // Pada foto nyata RC dapat dibaca sebagai KC / PC / RE / R∠, sedangkan
+            // 2/9 dapat menjadi 7g, ^g, /g, atau g. Ini HANYA gate untuk memilih
+            // baris yang perlu PP-OCRv6; keputusan material final tetap memakai guard lama.
+            const rc=/(?:^|[^A-Z0-9])(?:R[C0OQG]|[2Z]C|KC|PC|RE)(?=[.:;\-\/^%_{}()\[\]0-9]|$)/.test(text)
+                || /(?:^|[^A-Z0-9])R[^A-Z0-9]{1,3}13[0OQ]/.test(text);
+            if (rc && /13[0-9OQ]/.test(text)) return 'RC';
+        }
+        return '';
+    }
+
+    function smartHintMaterialV598(raw) {
+        const text=normalisasiSubscriptV577(normalisasiHasilOCRNota(raw)).toUpperCase().trim();
+        if (!text || smartNoiseNotaV598(text)) return false;
+        if (tipeSheetEksplisitDariOCR(text) || adaUnitPetiOCRV7(text)
+            || /(?:PLY|LYW|YWO|WOOD|MDF|MOF|MPF|PETI|PET\b)/.test(text)) return true;
+        if (smartKeluargaRcV598(text) || petunjukBrcMentahV578(text) || petunjukRcMentahV579(text)) return true;
+        if (/(?:^|[^A-Z0-9])(?:B\s*[.:;\-]?\s*(?:SG|S)|BSG|SG)(?=\s|[0-9.:;=\-/]|$)/.test(text)) return true;
+        // Baris kayu tanpa kode (Papan Sengon) biasanya berupa panjang 3 digit + ukuran/jumlah.
+        const c=text.replace(/\s+/g,'');
+        if (/(?:^|[^0-9])1[0-9]{2}(?:[0-9GQOILZS]|[\/\\|{}\[\]()^%_~]){1,7}(?:=|二|﹦|＝|-)?(?:[1-9]|1[0-9])?(?:$|[^0-9])/.test(c)) return true;
+        return false;
+    }
+
+    function smartJumlahJelasV598(raw, master) {
+        if (!master) return false;
+        if (isSheetItem(master)) {
+            return adaUnitPetiOCRV7(raw) && /(?:^|[^0-9])(?:1|2|3|4|5|6|7|8|9|1[0-9])(?=\s*(?:PETI|STICK|STIK|PCS?|LEMBAR)|$|[^0-9])/i.test(normalisasiHasilOCRNota(raw));
+        }
+        return !!jumlahKetatV574(raw) || !!jumlahEksplisitV3(raw, false);
+    }
+
+    function smartCanonKuatV598(record) {
+        if (!record || Number(record?.score||0)<0.80) return false;
+        const canon=kanoniskanBarisPaddle(record?.text||'', Number(record?.score||0));
+        if (!canon?.master || canon.corrected!==false) return false;
+        return smartJumlahJelasV598(record?.text||'', canon.master);
+    }
+
+    function smartPilihWideSegmentsV598(prepared, firstRaw) {
+        const byLine=new Map();
+        for (const r of firstRaw||[]) {
+            const line=lineIndexHasilV4(r); if(line==null) continue;
+            if(!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+        const hinted=new Set();
+        for (const [line,recs] of byLine) if (recs.some(r=>smartHintMaterialV598(r?.text||''))) hinted.add(Number(line));
+        const fallbackAll=hinted.size===0;
+        const selected=[];
+        for (const seg of prepared?.segments||[]) {
+            const recs=byLine.get(Number(seg.index))||[];
+            if (recs.some(smartCanonKuatV598)) continue; // satu view sudah exact + jumlah jelas
+            if (recs.some(r=>smartHintMaterialV598(r?.text||''))) { selected.push(seg); continue; }
+            if (recs.some(r=>smartNoiseNotaV598(r?.text||''))) continue;
+            const hasText=recs.some(r=>String(r?.text||'').trim());
+            if (fallbackAll && hasText) { selected.push(seg); continue; }
+            // Baris sangat dekat dengan material boleh mendapat second view bila TIGHT-nya lemah.
+            if (hasText && [...hinted].some(i=>Math.abs(i-Number(seg.index))===1)
+                && recs.some(r=>Number(r?.score||0)<0.62)
+                && recs.some(r=>/[A-Z].*\d|\d.*[A-Z]|\d{2,}/i.test(String(r?.text||'')))) selected.push(seg);
+        }
+        return selected;
+    }
+
+    function smartPerluWholeV598(paddlePicked, prepared) {
+        const byLine=new Map();
+        for (const r of paddlePicked?.raw||[]) {
+            const line=lineIndexHasilV4(r); if(line==null) continue;
+            if(!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+        const materialLines=[];
+        let unknownNonNoise=0;
+        for (const [line,recs] of byLine) {
+            const material=recs.some(r=>smartHintMaterialV598(r?.text||'') || !!kanoniskanBarisPaddle(r?.text||'',r?.score||0)?.master);
+            if (material) materialLines.push({line,recs});
+            else if (recs.some(r=>String(r?.text||'').trim() && !smartNoiseNotaV598(r?.text||''))) unknownNonNoise++;
+        }
+        if (!materialLines.length) return true;
+        if (unknownNonNoise>0) return true;
+        // Whole-image hanya boleh dilewati bila semua baris material punya hasil exact + jumlah jelas.
+        for (const item of materialLines) {
+            if (!item.recs.some(smartCanonKuatV598)) return true;
+        }
+        return false;
+    }
+
+    function smartPreparedGeneralRescueV598(prepared, paddleRaw) {
+        if (!prepared?.segments?.length) return prepared;
+        const byLine=new Map();
+        for (const r of paddleRaw||[]) {
+            if (String(r?.source||'PADDLE').toUpperCase()!=='PADDLE') continue;
+            const line=lineIndexHasilV4(r); if(line==null) continue;
+            if(!byLine.has(Number(line))) byLine.set(Number(line),[]);
+            byLine.get(Number(line)).push(r);
+        }
+        const materialIndices=[];
+        for (const [line,recs] of byLine) if (recs.some(r=>smartHintMaterialV598(r?.text||''))) materialIndices.push(Number(line));
+        // Jika Paddle sama sekali tidak menemukan petunjuk material, jangan mempersempit rescue lama.
+        if (!materialIndices.length) return prepared;
+        const keep=[];
+        for (const seg of prepared.segments) {
+            const recs=byLine.get(Number(seg.index))||[];
+            if (!recs.length) continue;
+            if (recs.some(r=>smartNoiseNotaV598(r?.text||''))) continue;
+            // RC/B.RC mempunyai PP-OCRv6 khusus; jangan buang waktu TrOCR/Tesseract umum di sini.
+            if (recs.some(r=>!!smartKeluargaRcV598(r?.text||'') || petunjukBrcMentahV578(r?.text||'') || petunjukRcMentahV579(r?.text||''))) continue;
+            if (recs.some(r=>smartHintMaterialV598(r?.text||'') || !!kanoniskanBarisPaddle(r?.text||'',r?.score||0)?.master)) keep.push(seg);
+        }
+        return {...prepared,segments:keep};
+    }
+
+
+    // ===== V5.99 SMART RC TARGET =====
+    // Memperbaiki regresi V5.98 tanpa mengembalikan full-scan ke semua baris.
+    // Contoh nyata: KC.1307g=8 / R∠.130^g=8 / PC.130g=8 = RC 130 2/9 = 8.
+    // Tahap ini hanya menyalakan PP-OCRv6 pada baris fisik yang punya petunjuk Papan RC.
+    function evidenceRcSmartV599(raw) {
+        const normalized=normalisasiSubscriptV577(normalisasiHasilOCRNota(raw)).toUpperCase();
+        const compact=normalized.replace(/\s+/g,'');
+        const mapped=compact.replace(/[O]/g,'0').replace(/[QG]/g,'9');
+        const brc=smartKeluargaRcV598(raw)==='BRC' || brcJelasV595(raw)
+            || /(?:^|[^A-Z0-9])(?:B|8)[.。,:;\/\-]*(?:R|P|F|9)[.。,:;\/\-]*[C0OQG]/.test(compact);
+        if (brc) return {rc:false,brc:true,length130:false,den9:false,qty:null,strong:false};
+
+        const rc=smartKeluargaRcV598(raw)==='RC' || rcishV595(raw)
+            || /(?:^|[^A-Z0-9])(?:RC|2C|KC|PC|RE)[.。,:;\/\-]*13[0OQ]/.test(compact)
+            || /(?:^|[^A-Z0-9])R[^A-Z0-9]{1,3}13[0OQ]/.test(compact);
+        const length130=/13[0OQ]/.test(compact) || /130/.test(mapped);
+        const idx=mapped.indexOf('130');
+        const tailAll=idx>=0 ? mapped.slice(idx+3,idx+15) : '';
+        const tail=tailAll.split(/(?:=|二|﹦|＝|≥|>)/)[0];
+        const den9=/^[\/\\|{}\[\]()^%_~]*[27]?[\/\\|{}\[\]()^%_~]*9(?=$|[^0-9])/.test(tail)
+            || /^79(?=$|[^0-9])/.test(tail)
+            || /^9(?=$|[^0-9])/.test(tail);
+        const qty=qtyEksplisitDinamisV595(raw);
+        return {rc,brc:false,length130,den9,qty,strong:!!(rc&&length130&&(den9||qty!=null))};
+    }
+
+    function barisTargetRcSmartV599(rawRecords, existingRows) {
+        if ((existingRows||[]).some(r=>masterSamaTargetV587(r?.canon?.master,'PAPAN RC',130,9,2))) return [];
+        const target=masterRc13029V579();
+        if (!target) return [];
+        const byLine=new Map();
+        for (const r of rawRecords||[]) {
+            if (String(r?.source||'').toUpperCase()!=='PADDLE') continue;
+            const line=lineIndexHasilV4(r); if(line==null || Number(r?.score||0)<0.40) continue;
+            const ev=evidenceRcSmartV599(r?.text||'');
+            if (!ev.strong) continue;
+            let score=2+Math.max(0,Math.min(1,Number(r?.score||0)));
+            if (ev.den9) score+=1.6;
+            if (ev.qty!=null) score+=1.2;
+            byLine.set(Number(line),(byLine.get(Number(line))||0)+score);
+        }
+        return [...byLine.entries()].sort((a,b)=>b[1]-a[1]).map(([line])=>line).slice(0,2);
+    }
+
+    async function bacaRcSmartTargetV599(prepared, rawRecords, existingRows) {
+        const targetLines=barisTargetRcSmartV599(rawRecords,existingRows);
+        if (!targetLines.length) return {records:[],targetLines:[],error:'',skipped:'no-smart-target'};
+        const inputs=[],meta=[];
+        try {
+            const ocr=await getPaddleOCRV6BrcInstanceNota();
+            for (const line of targetLines) {
+                const seg=(prepared?.segments||[]).find(s=>Number(s.index)===Number(line));
+                if (!seg) continue;
+                const views=['TIGHT-ASLI','WIDE-RATA']
+                    .map(name=>seg.variants?.find(v=>v.name===name))
+                    .filter(v=>v?.canvas && v.canvas.width>1 && v.canvas.height>1);
+                for (const view of views) {
+                    inputs.push(view.canvas);
+                    meta.push({lineIndex:Number(line),variant:`V6-RC-SMART-${view.name}`,y:seg.y});
+                }
+            }
+            if (!inputs.length) return {records:[],targetLines,error:'',skipped:'no-canvas'};
+            setNotaStatus(`RC kandidat • PP-OCRv6 memeriksa ${inputs.length} crop terarah...`);
+            const results=await ocr.predict(inputs,{
+                textDetLimitSideLen:1200,textDetLimitType:'max',textDetThresh:0.10,
+                textDetBoxThresh:0.16,textDetUnclipRatio:2.15,textRecScoreThresh:0.025
+            });
+            const picked=pilihHasilBarisKhususPaddle(results||[],meta);
+            const records=(picked.raw||[]).map(r=>({...r,source:'PADDLE-V6-RC-SMART',variant:r.variant||'V6-RC-SMART'}));
+            return {records,targetLines,error:'',skipped:''};
+        } catch(error) {
+            console.warn('PP-OCRv6 Smart RC V5.99 gagal; jalur V5.98 tetap tersedia:',error);
+            return {records:[],targetLines,error:String(error?.message||error),skipped:'error'};
+        }
+    }
+
+    function smartPerluRcBeratV598(rawRecords, rows) {
+        if ((rows||[]).some(r=>masterSamaTargetV587(r?.canon?.master,'PAPAN RC',130,9,2))) return false;
+        if ((rows||[]).some(r=>canonicalMaterialType(r?.canon?.master?.tipe)==='PAPAN RC')) return true;
+        return (rawRecords||[]).some(r=>{
+            const src=String(r?.source||'').toUpperCase();
+            if (!(src==='PADDLE' || src==='PADDLE-WHOLE')) return false;
+            // B.RC tidak boleh menyalakan full-scan Papan RC.
+            return smartKeluargaRcV598(r?.text||'')==='RC' || petunjukRcMentahV579(r?.text||'');
+        });
+    }
+
+    let notaWarmupV598Timer=null;
+    function jadwalkanWarmupPaddleV598() {
+        if (!notaPhotoFile || notaPaddleInstancePromise) return;
+        if (notaWarmupV598Timer) clearTimeout(notaWarmupV598Timer);
+        notaWarmupV598Timer=setTimeout(async()=>{
+            notaWarmupV598Timer=null;
+            try {
+                await getPaddleOCRInstanceNota();
+                if (notaPhotoFile) setNotaStatus('OCR siap • tekan “SCAN”.','success');
+            } catch (error) {
+                console.warn('Warm-up PaddleOCR V5.98 dilewati:',error);
+            }
+        },180);
+    }
+
     async function bacaSatuFotoDenganPaddleOCRV36(file, photoIndex = 0, totalPhotos = 1, manageButtons = true) {
         if (!file) return { ok: false, error: 'Foto tidak tersedia.', lines: [], raw: [] };
         const previousNotaPhotoFile = notaPhotoFile;
@@ -13003,41 +14571,53 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
             setNotaStatus('Mode Akurat Tulisan Tangan: menyiapkan baris untuk PaddleOCR + TrOCR...');
             const prepared = await siapkanBarisNotaKhususPaddle(notaPhotoFile);
 
-            const inputs = [];
-            const meta = [];
-            prepared.segments.forEach(seg => {
-                const ringan = seg.variants.filter(v => v.name === 'TIGHT-ASLI' || v.name === 'WIDE-RATA');
-                (ringan.length ? ringan : seg.variants.slice(0, 2)).forEach(v => {
-                    inputs.push(v.canvas);
-                    meta.push({ lineIndex: seg.index, variant: v.name, y: seg.y, source: 'PADDLE' });
-                });
-            });
+            // V5.98 SMART: TIGHT-ASLI dahulu; WIDE-RATA hanya untuk baris yang masih perlu second view.
+            const tightInputs=[];
+            const tightMeta=[];
+            for (const seg of prepared.segments||[]) {
+                const v=seg.variants?.find(x=>x.name==='TIGHT-ASLI') || seg.variants?.[0];
+                if (!v?.canvas) continue;
+                tightInputs.push(v.canvas);
+                tightMeta.push({lineIndex:seg.index,variant:v.name||'TIGHT-ASLI',y:seg.y,source:'PADDLE'});
+            }
 
-            let paddleResults = [];
-            let paddlePicked = { chosen: [], raw: [] };
-            if (inputs.length) {
-                setNotaStatus(`OCR Tulisan Tangan • ${prepared.segments.length} kandidat baris • membaca ${inputs.length} crop...`);
-                paddleResults = await ocr.predict(inputs, {
-                    textDetLimitSideLen: 1024,
-                    textDetLimitType: 'max',
-                    textDetThresh: 0.15,
-                    textDetBoxThresh: 0.23,
-                    textDetUnclipRatio: 1.95,
-                    textRecScoreThresh: 0.08
+            let paddlePicked={chosen:[],raw:[]};
+            let smartWideSegmentsV598=[];
+            if (tightInputs.length) {
+                setNotaStatus(`OCR Cepat • pass 1/${prepared.segments.length} baris...`);
+                const tightResults=await ocr.predict(tightInputs,{
+                    textDetLimitSideLen:1024,textDetLimitType:'max',textDetThresh:0.15,
+                    textDetBoxThresh:0.23,textDetUnclipRatio:1.95,textRecScoreThresh:0.08
                 });
-                paddlePicked = pilihHasilBarisKhususPaddle(paddleResults || [], meta);
-                // Hasil teks sudah disalin; lepaskan canvas varian yang tidak diperlukan lagi.
-                inputs.length = 0;
-                meta.length = 0;
-                paddleResults = [];
+                const firstPicked=pilihHasilBarisKhususPaddle(tightResults||[],tightMeta);
+                smartWideSegmentsV598=smartPilihWideSegmentsV598(prepared,firstPicked.raw||[]);
+
+                const wideInputs=[],wideMeta=[];
+                for (const seg of smartWideSegmentsV598) {
+                    const v=seg.variants?.find(x=>x.name==='WIDE-RATA');
+                    if (!v?.canvas) continue;
+                    wideInputs.push(v.canvas);
+                    wideMeta.push({lineIndex:seg.index,variant:'WIDE-RATA',y:seg.y,source:'PADDLE'});
+                }
+                if (wideInputs.length) {
+                    setNotaStatus(`OCR Cepat • ${wideInputs.length} baris ambigu mendapat view kedua...`);
+                    const wideResults=await ocr.predict(wideInputs,{
+                        textDetLimitSideLen:1024,textDetLimitType:'max',textDetThresh:0.15,
+                        textDetBoxThresh:0.23,textDetUnclipRatio:1.95,textRecScoreThresh:0.08
+                    });
+                    paddlePicked=pilihHasilBarisKhususPaddle([...(tightResults||[]),...(wideResults||[])],[...tightMeta,...wideMeta]);
+                } else {
+                    paddlePicked=firstPicked;
+                }
                 lepasCanvasVarianBeratV5(prepared);
             }
 
-            // V3 selalu membaca foto penuh juga. Pada V2 fallback ini hanya dijalankan
-            // bila SEMUA segment gagal, sehingga satu baris yang terlewat tidak pernah diselamatkan.
-            setNotaStatus('OCR Tulisan Tangan • mengecek foto penuh untuk baris yang mungkin terlewat...');
+            // V5.98: whole-image tetap menjadi jaring pengaman, tetapi nota yang seluruh baris
+            // materialnya sudah exact + jumlah jelas tidak perlu diproses ulang pada foto penuh.
+            const smartNeedWholeV598=smartPerluWholeV598(paddlePicked,prepared);
             let wholePicked = { chosen: [], raw: [] };
-            try {
+            if (smartNeedWholeV598) try {
+                setNotaStatus('OCR Cepat • mengecek foto penuh karena masih ada bagian ambigu...');
                 const wholeInputs = await buatInputPaddleNota(notaPhotoFile);
                 const wholeResults = await ocr.predict(wholeInputs, {
                     textDetLimitSideLen: 1600,
@@ -13080,7 +14660,10 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                 existingByLine.get(key).push({ ...r, source: 'PADDLE' });
             }
 
-            const trocrRecords = await bacaTrocrPreparedV5(prepared, existingByLine);
+            // V5.98: rescue umum hanya melihat baris material non-RC yang belum pasti.
+            // RC/B.RC ditangani PP-OCRv6 khusus pada tahap berikutnya.
+            const smartGeneralPreparedV598=smartPreparedGeneralRescueV598(prepared,paddlePicked.raw||[]);
+            const trocrRecords = await bacaTrocrPreparedV5(smartGeneralPreparedV598, existingByLine);
             for (const r of trocrRecords) {
                 const key = r.lineIndex;
                 if (key == null) continue;
@@ -13088,7 +14671,7 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                 existingByLine.get(key).push(r);
             }
 
-            const tessRecords = await rescueTesseractBarisV3(prepared, existingByLine);
+            const tessRecords = await rescueTesseractBarisV3(smartGeneralPreparedV598, existingByLine);
             const picked = pilihGabunganV3(prepared, paddlePicked, wholePicked, trocrRecords, tessRecords);
 
             notaPaddleRawRows = picked.raw;
@@ -13169,29 +14752,51 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
             if (v6RcReadV579.records?.length) picked.raw.push(...v6RcReadV579.records);
             const rcDualRecoveryV579 = rescueRc13029DenganPaddleV6V579(picked.raw, v6RcReadV579.records, brcDualRecoveryV578.rows);
 
-            // V5.80: jika V5.79 masih gagal, scan beberapa baris material kosong dengan
-            // PP-OCRv6. Append-only: hasil V5.79 tidak diubah.
-            const v6RcSecondV580 = await bacaRcSecondChanceV580(prepared, picked.raw, rcDualRecoveryV579.rows);
-            if (v6RcSecondV580.records?.length) picked.raw.push(...v6RcSecondV580.records);
-            const rcSecondRecoveryV580 = rescueRcSecondChanceV580(picked.raw, v6RcSecondV580.records, rcDualRecoveryV579.rows);
+            // V5.99: sebelum full-scan mahal, baca HANYA baris yang tampak seperti
+            // RC/KC/PC/RE/R∠ + 130 + glyph 9. Ini menangani KC.1307g=8 tanpa
+            // mengembalikan RC3/RC4 ke judul, B.RC, tanda tangan, atau baris kosong.
+            const v6RcSmartV599=await bacaRcSmartTargetV599(prepared,picked.raw,rcDualRecoveryV579.rows);
+            if (v6RcSmartV599.records?.length) picked.raw.push(...v6RcSmartV599.records);
+            const rcSmartFastBaseV599=rescueRc13029MultiViewV596(picked.raw,rcDualRecoveryV579.rows,prepared);
+            const rcSmartFastV599={...rcSmartFastBaseV599,debugRecords:[...(rcSmartFastBaseV599.debugRecords||[])]};
+            if (rcSmartFastV599.recovered) {
+                const row=(rcSmartFastV599.rows||[]).find(r=>masterSamaTargetV587(r?.canon?.master,'PAPAN RC',130,9,2));
+                rcSmartFastV599.debugRecords.push({source:'RECOVERY-V599',variant:'RC-130-2-9-SMART-TARGET',
+                    lineIndex:lineIndexHasilV4(row),y:posisiYHasilV4(row),score:0.99,
+                    text:`${row?.canon?.text||'RC 130 2/9'} [targeted V6; targets=${v6RcSmartV599.targetLines?.join(',')||'-'}; tanpa full-scan]`});
+            }
 
-            // V5.81: benar-benar second chance. Bila RC 130 2/9 masih belum ada,
-            // scan seluruh segmen dengan crop tipis + lebar penuh menggunakan PP-OCRv6.
-            const v6RcFullV581 = await bacaRcFullScanV581(prepared, picked.raw, rcSecondRecoveryV580.rows);
-            if (v6RcFullV581.records?.length) picked.raw.push(...v6RcFullV581.records);
-            const rcFullRecoveryV581 = rescueRcFullScanV581(picked.raw, v6RcFullV581.records, rcSecondRecoveryV580.rows);
+            // V5.99 SMART GATE: full-scan RC hanya cadangan jika targeted V6 belum cukup.
+            const smartNeedRcHeavyV598=smartPerluRcBeratV598(picked.raw,rcSmartFastV599.rows);
+            let v6RcSecondV580={records:[],targetLines:[],error:'',skipped:'smart-no-papan-rc'};
+            let rcSecondRecoveryV580={rows:rcSmartFastV599.rows,recovered:0,debugRecords:[],reason:'smart-skip'};
+            let v6RcFullV581={records:[],targetLines:[],error:'',skipped:'smart-no-papan-rc'};
+            let rcFullRecoveryV581={rows:rcSecondRecoveryV580.rows,recovered:0,debugRecords:[],reason:'smart-skip'};
+            let v6RcIsoV582={records:[],targetLines:[],error:'',skipped:'smart-no-papan-rc'};
+            let rcSiblingV582={rows:rcFullRecoveryV581.rows,recovered:0,debugRecords:[],reason:'smart-skip'};
+            let legacyTrocrRc29V584=[];
+            let legacyRc29V584={rows:rcSiblingV582.rows,recovered:0,debugRecords:[],source:'smart-skip'};
+            if (smartNeedRcHeavyV598) {
+                // V5.80: jika V5.79 masih gagal, scan beberapa baris material kosong dengan PP-OCRv6.
+                v6RcSecondV580 = await bacaRcSecondChanceV580(prepared, picked.raw, rcSmartFastV599.rows);
+                if (v6RcSecondV580.records?.length) picked.raw.push(...v6RcSecondV580.records);
+                rcSecondRecoveryV580 = rescueRcSecondChanceV580(picked.raw, v6RcSecondV580.records, rcSmartFastV599.rows);
 
-            // V5.82: bila V5.81 masih gagal, baca ulang dengan batas vertikal antarbaris
-            // yang benar-benar terisolasi, lalu gunakan sibling RC sebagai eliminasi kandidat.
-            const v6RcIsoV582 = await bacaRcIsolasiV582(prepared, picked.raw, rcFullRecoveryV581.rows);
-            if (v6RcIsoV582.records?.length) picked.raw.push(...v6RcIsoV582.records);
-            const rcSiblingV582 = rescueRcSiblingV582(picked.raw, v6RcIsoV582.records, rcFullRecoveryV581.rows, prepared);
+                // V5.81: second chance full-scan hanya karena ada petunjuk Papan RC.
+                v6RcFullV581 = await bacaRcFullScanV581(prepared, picked.raw, rcSecondRecoveryV580.rows);
+                if (v6RcFullV581.records?.length) picked.raw.push(...v6RcFullV581.records);
+                rcFullRecoveryV581 = rescueRcFullScanV581(picked.raw, v6RcFullV581.records, rcSecondRecoveryV580.rows);
 
-            // V5.84: bila seluruh jalur modern masih kehilangan RC 130 2/9, jalankan
-            // satu pass TrOCR persis gaya V555 lalu pulihkan HANYA master RC 130 2/9.
-            const legacyTrocrRc29V584 = await bacaTrocrLegacyV555Rc29V584(prepared, picked.raw, rcSiblingV582.rows);
-            if (legacyTrocrRc29V584.length) picked.raw.push(...legacyTrocrRc29V584);
-            const legacyRc29V584 = pulihkanRc13029DenganJalurV555V584(picked.raw, rcSiblingV582.rows, legacyRc29SnapshotV584, prepared);
+                // V5.82: isolasi antarbaris.
+                v6RcIsoV582 = await bacaRcIsolasiV582(prepared, picked.raw, rcFullRecoveryV581.rows);
+                if (v6RcIsoV582.records?.length) picked.raw.push(...v6RcIsoV582.records);
+                rcSiblingV582 = rescueRcSiblingV582(picked.raw, v6RcIsoV582.records, rcFullRecoveryV581.rows, prepared);
+
+                // V5.84: TrOCR legacy hanya untuk foto yang memang mengandung petunjuk Papan RC.
+                legacyTrocrRc29V584 = await bacaTrocrLegacyV555Rc29V584(prepared, picked.raw, rcSiblingV582.rows);
+                if (legacyTrocrRc29V584.length) picked.raw.push(...legacyTrocrRc29V584);
+                legacyRc29V584 = pulihkanRc13029DenganJalurV555V584(picked.raw, rcSiblingV582.rows, legacyRc29SnapshotV584, prepared);
+            }
             // V5.86: append-only untuk pola kompak RC 130 7/9 dan B.RC 130 9/9.
             const compactRcBrcV586 = rescueRcBrcKompakV586(picked.raw, legacyRc29V584.rows, prepared);
             // V5.87: kalibrasi bentuk tulisan dari baris yang SUDAH benar pada foto yang sama.
@@ -13215,9 +14820,22 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
             // baris 2/15 sebagai kalibrasi foto yang sama untuk RC 130 2/9 dengan jumlah dinamis.
             const rc215V595 = rescueRc130215ConsensusV595(picked.raw, rcDen15V594.rows, prepared);
             const rc29DynamicV595 = rescueRc13029FromSamePhotoAnchorV595(picked.raw, rc215V595.rows, rc215V595);
-            const cleanedFinalV579 = rc29DynamicV595.rows;
-            if (handwritingRecoveryV574.debugRecords?.length || targetedRecoveryV577.debugRecords?.length || brcDualRecoveryV578.debugRecords?.length || rcDualRecoveryV579.debugRecords?.length || rcSecondRecoveryV580.debugRecords?.length || rcFullRecoveryV581.debugRecords?.length || rcSiblingV582.debugRecords?.length || legacyRc29V584.debugRecords?.length || compactRcBrcV586.debugRecords?.length || photoCalibrationV587.debugRecords?.length || brcQuantityV589.debugRecords?.length || brc180FixV591.debugRecords?.length || brcCodeFixV592.debugRecords?.length || brcRelaxedV593.debugRecords?.length || rcDen15V594.debugRecords?.length || rc215V595.debugRecords?.length || rc29DynamicV595.debugRecords?.length) {
-                picked.raw.push(...(handwritingRecoveryV574.debugRecords || []), ...(targetedRecoveryV577.debugRecords || []), ...(brcDualRecoveryV578.debugRecords || []), ...(rcDualRecoveryV579.debugRecords || []), ...(rcSecondRecoveryV580.debugRecords || []), ...(rcFullRecoveryV581.debugRecords || []), ...(rcSiblingV582.debugRecords || []), ...(legacyRc29V584.debugRecords || []), ...(compactRcBrcV586.debugRecords || []), ...(photoCalibrationV587.debugRecords || []), ...(brcQuantityV589.debugRecords || []), ...(brc180FixV591.debugRecords || []), ...(brcCodeFixV592.debugRecords || []), ...(brcRelaxedV593.debugRecords || []), ...(rcDen15V594.debugRecords || []), ...(rc215V595.debugRecords || []), ...(rc29DynamicV595.debugRecords || []));
+            // V5.96: bila tidak ada anchor RC 2/15, pakai konsensus ketat multi-view
+            // pada baris fisik yang sama. Ini menangani bentuk nyata RC.130 2/9 = 8
+            // yang berulang dibaca 1307g / 130^g / 130/g tanpa meng-hard-code jumlah.
+            const rc29MultiViewV596 = rescueRc13029MultiViewV596(picked.raw, rc29DynamicV595.rows, prepared);
+            // V5.97: append-only B.RC 130 9/9 untuk glyph kolaps 130/136 + g22.
+            // Tidak mengubah PLYWOOD/RC/SG atau hasil B.RC yang sudah ada.
+            const brcCollapseV597 = rescueBrc13099CollapsedV597(picked.raw, rc29MultiViewV596.rows, prepared);
+            // V6.00: jika V5.97 belum menemukan B.RC 9/9 (mis. jumlah bukan 2),
+            // ambil jumlah dinamis dari QTY-KANAN + konsensus tail OCR.
+            const brcDynamicQtyV600 = rescueBrc13099DynamicQtyV600(picked.raw, brcCollapseV597.rows, prepared);
+            // V6.01: fallback berbasis cluster fisik; memperbaiki segmentasi B.RC yang pecah
+            // menjadi line 3/4 dan menerima satu digit confidence tinggi dari QTY-KANAN.
+            const brcPhysicalV601 = rescueBrc13099PhysicalClusterV601(picked.raw, brcDynamicQtyV600.rows, prepared);
+            const cleanedFinalV579 = brcPhysicalV601.rows;
+            if (handwritingRecoveryV574.debugRecords?.length || targetedRecoveryV577.debugRecords?.length || brcDualRecoveryV578.debugRecords?.length || rcDualRecoveryV579.debugRecords?.length || rcSecondRecoveryV580.debugRecords?.length || rcFullRecoveryV581.debugRecords?.length || rcSiblingV582.debugRecords?.length || legacyRc29V584.debugRecords?.length || compactRcBrcV586.debugRecords?.length || photoCalibrationV587.debugRecords?.length || brcQuantityV589.debugRecords?.length || brc180FixV591.debugRecords?.length || brcCodeFixV592.debugRecords?.length || brcRelaxedV593.debugRecords?.length || rcDen15V594.debugRecords?.length || rc215V595.debugRecords?.length || rc29DynamicV595.debugRecords?.length || rc29MultiViewV596.debugRecords?.length || brcCollapseV597.debugRecords?.length || brcDynamicQtyV600.debugRecords?.length || brcPhysicalV601.debugRecords?.length || rcSmartFastV599.debugRecords?.length) {
+                picked.raw.push(...(handwritingRecoveryV574.debugRecords || []), ...(targetedRecoveryV577.debugRecords || []), ...(brcDualRecoveryV578.debugRecords || []), ...(rcDualRecoveryV579.debugRecords || []), ...(rcSecondRecoveryV580.debugRecords || []), ...(rcFullRecoveryV581.debugRecords || []), ...(rcSiblingV582.debugRecords || []), ...(legacyRc29V584.debugRecords || []), ...(compactRcBrcV586.debugRecords || []), ...(photoCalibrationV587.debugRecords || []), ...(brcQuantityV589.debugRecords || []), ...(brc180FixV591.debugRecords || []), ...(brcCodeFixV592.debugRecords || []), ...(brcRelaxedV593.debugRecords || []), ...(rcDen15V594.debugRecords || []), ...(rc215V595.debugRecords || []), ...(rc29DynamicV595.debugRecords || []), ...(rc29MultiViewV596.debugRecords || []), ...(brcCollapseV597.debugRecords || []), ...(brcDynamicQtyV600.debugRecords || []), ...(brcPhysicalV601.debugRecords || []), ...(rcSmartFastV599.debugRecords || []));
                 notaPaddleRawRows = picked.raw;
                 const rawTextV574 = picked.raw.map((x) => {
                     const pct = Number.isFinite(Number(x.score)) ? `${Math.round(Number(x.score) * 100)}%` : '-';
@@ -13333,7 +14951,19 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                     rcIsoRecordsV582: v6RcIsoV582.records?.length || 0,
                     rcIsoErrorV582: v6RcIsoV582.error || '',
                     recoveredRc13029V582: rcSiblingV582.recovered,
-                    rcSiblingReasonV582: rcSiblingV582.reason
+                    rcSiblingReasonV582: rcSiblingV582.reason,
+                    recoveredBrc13099CollapseV597: brcCollapseV597.recovered,
+                    brcCollapseReasonV597: brcCollapseV597.reason,
+                    smartWideViewsV598: smartWideSegmentsV598.length,
+                    smartWholeUsedV598: smartNeedWholeV598 ? 1 : 0,
+                    smartGeneralRescueSegmentsV598: smartGeneralPreparedV598?.segments?.length || 0,
+                    smartRcHeavyUsedV598: smartNeedRcHeavyV598 ? 1 : 0,
+                    smartRcTargetsV599: v6RcSmartV599.targetLines?.length || 0,
+                    smartRcRecordsV599: v6RcSmartV599.records?.length || 0,
+                    smartRcRecoveredV599: rcSmartFastV599.recovered || 0,
+                    recoveredBrcDynamicV600: brcDynamicQtyV600.recovered || 0,
+                    brcDynamicQtyV600: brcDynamicQtyV600.quantity || null,
+                    brcDynamicQtySourceV600: brcDynamicQtyV600.quantitySource || '' 
                 }
             };
             lepasSemuaCanvasPreparedV36(prepared);
@@ -15290,8 +16920,8 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
         updateCalculationMode();
         hitungKubikasi();
 
-        document.getElementById('btn-calc-save').innerHTML = '💾 Update Draft';
-        document.getElementById('btn-calc-save').className = 'btn btn-warning';
+        document.getElementById('btn-calc-save').innerHTML = 'Update Draft';
+        document.getElementById('btn-calc-save').className = 'btn btn-edit';
         document.getElementById('btn-calc-cancel').style.display = 'block';
         scrollKeFormEdit('calc-form-area', 'c-stick');
     }
@@ -15305,8 +16935,8 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
     }
 
     function resetCalcBtn() {
-        document.getElementById('btn-calc-save').innerHTML = '+ Tambah Draft';
-        document.getElementById('btn-calc-save').className = 'btn btn-primary';
+        document.getElementById('btn-calc-save').innerHTML = 'Tambah Draft';
+        document.getElementById('btn-calc-save').className = 'btn btn-input';
         document.getElementById('btn-calc-cancel').style.display = 'none';
     }
 
@@ -15382,8 +17012,8 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                 <td>${kubikasiDisplay}</td>
                 <td class="draft-action-cell">
                     <div class="draft-actions">
-                        <button class="btn btn-warning" onclick="editDraft(${d.id})" style="padding:4px 7px;">Edit</button>
-                        <button class="btn btn-danger" onclick="hapusDraft(${d.id})" style="padding:4px 7px;">Hapus</button>
+                        <button class="btn btn-edit" onclick="editDraft(${d.id})" style="padding:4px 7px;">Edit</button>
+                        <button class="btn btn-delete" onclick="hapusDraft(${d.id})" style="padding:4px 7px;">Hapus</button>
                     </div>
                 </td>
             </tr>`;
@@ -15561,8 +17191,44 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
     }
 
     // --- NPB ---
+    const NPB_TANGGAL_MANUAL_KEY_V606 = 'npbTanggalManualV606';
+
+    function formatTanggalNpbHariIniV606(date = new Date()) {
+        const d = String(date.getDate()).padStart(2, '0');
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const y = date.getFullYear();
+        return `${d}/${m}/${y}`;
+    }
+
+    function tanggalNpbSedangManualV606() {
+        return localStorage.getItem(NPB_TANGGAL_MANUAL_KEY_V606) === '1';
+    }
+
+    function tandaiTanggalNpbManualV606() {
+        localStorage.setItem(NPB_TANGGAL_MANUAL_KEY_V606, '1');
+    }
+
+    function pastikanTanggalNpbOtomatisV606(force = false) {
+        const tgl = document.getElementById('npb-tgl');
+        if (!tgl) return;
+        const manual = tanggalNpbSedangManualV606();
+        if (force || !manual || !String(tgl.value || '').trim()) {
+            tgl.value = formatTanggalNpbHariIniV606();
+            if (force) localStorage.removeItem(NPB_TANGGAL_MANUAL_KEY_V606);
+            sinkronkanFormNpbKeSemuaHalaman();
+            saveNpbForm();
+        }
+    }
+
+    function resetTanggalNpbDokumenBaruV606() {
+        localStorage.removeItem(NPB_TANGGAL_MANUAL_KEY_V606);
+        pastikanTanggalNpbOtomatisV606(true);
+    }
+
     function kirimKeNPB() {
         if(draftData.length === 0) return alert('Belum ada draft yang disimpan!');
+        // Tanggal mengikuti hari ini selama pengguna belum memilih tanggal manual.
+        pastikanTanggalNpbOtomatisV606(false);
         renderNPB();
         switchMenu('npb');
     }
@@ -15622,7 +17288,10 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                 const source = document.getElementById(cloneInput.dataset.npbSourceId || '');
                 if (!source) return;
                 if (cloneInput.type === 'checkbox') source.checked = cloneInput.checked;
-                else source.value = cloneInput.value;
+                else {
+                    source.value = cloneInput.value;
+                    if (source.id === 'npb-tgl') tandaiTanggalNpbManualV606();
+                }
                 sinkronkanFormNpbKeSemuaHalaman();
                 saveNpbForm();
             };
@@ -15845,11 +17514,25 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
                     saveNpbForm();
                 });
             } else {
-                if (saved[id] !== undefined) el.value = saved[id];
-                el.addEventListener('input', () => {
-                    sinkronkanFormNpbKeSemuaHalaman();
-                    saveNpbForm();
-                });
+                if (id === 'npb-tgl') {
+                    // V606: tanggal otomatis hari ini, tetapi tanggal manual tetap boleh disimpan.
+                    if (tanggalNpbSedangManualV606() && saved[id] !== undefined && String(saved[id]).trim()) {
+                        el.value = saved[id];
+                    } else {
+                        el.value = formatTanggalNpbHariIniV606();
+                    }
+                    el.addEventListener('input', () => {
+                        tandaiTanggalNpbManualV606();
+                        sinkronkanFormNpbKeSemuaHalaman();
+                        saveNpbForm();
+                    });
+                } else {
+                    if (saved[id] !== undefined) el.value = saved[id];
+                    el.addEventListener('input', () => {
+                        sinkronkanFormNpbKeSemuaHalaman();
+                        saveNpbForm();
+                    });
+                }
             }
         });
 
@@ -15862,11 +17545,8 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
             });
         });
 
-        const tgl = document.getElementById('npb-tgl');
-        if (tgl && !tgl.value) {
-            const now = new Date();
-            tgl.value = `${String(now.getDate()).padStart(2,'0')}-${String(now.getMonth()+1).padStart(2,'0')}-${now.getFullYear()}`;
-        }
+        // Pastikan nilai tanggal otomatis juga langsung tersalin ke halaman NPB lanjutan.
+        pastikanTanggalNpbOtomatisV606(false);
         sinkronkanFormNpbKeSemuaHalaman();
         saveNpbForm();
     }
@@ -15996,6 +17676,7 @@ Jika satu baris benar-benar tidak terbaca, abaikan baris itu daripada menebak.`;
         const jumlahData = draftData.length;
         if (!confirm(`Hapus semua ${formatPcsID(jumlahData)} data draft dan NPB?\n\nTindakan ini tidak dapat dibatalkan.`)) return;
         kosongkanDataPerhitungan();
+        resetTanggalNpbDokumenBaruV606();
         alert(`${formatPcsID(jumlahData)} data draft dan NPB berhasil dihapus.`);
     }
 </script>
